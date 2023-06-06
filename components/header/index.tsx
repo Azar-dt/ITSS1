@@ -13,7 +13,7 @@ export default function Header() {
         <Toolbar>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            BikeStore
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
