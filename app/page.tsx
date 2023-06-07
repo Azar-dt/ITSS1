@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/header";
-import Footer from "../components/Footer"
+import Footer from "../components/Footer";
 import Sidebar from "@/components/SideBar";
 import ProductLayout from "@/components/ProductLayout";
 import styled from "styled-components";
@@ -13,11 +13,10 @@ export default function Home() {
       <Container>
         <Sidebar />
         <ProductLayoutSection>
-        <ProductLayout/>
+          <ProductLayout />
         </ProductLayoutSection>
       </Container>
       <Footer />
-      
     </>
   );
 }

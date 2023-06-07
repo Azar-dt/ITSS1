@@ -1,125 +1,201 @@
 import Image from "next/image";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import styled from "styled-components";
-import Link from "next/link";
-import Chip from "@mui/material/Chip";
-import photoURL from '../public/bicycle_1.png'
-
+import photoURL from "../public/bicycle_1.png";
+import { useState } from "react";
 
 const ProductLayout = () => {
-    const product = {
-        id: "1",
-        pname: "Store 1",
-        photoURL,
-        description: "description here",
-        address: "Hai Ba Trung, Ha Noi",
-        quantity: "10",
-      }
+  const [cateId, setCateId] = useState<string>("0");
+
+  const product = {
+    id: "1",
+    pname: "Store 1",
+    photoURL,
+    description: "description here",
+    address: "Hai Ba Trung, Ha Noi",
+    quantity: "10",
+  };
+
+  const filters = [
+    {
+      id: "1",
+      name: "Gần nhất",
+    },
+    {
+      id: "2",
+      name: "Đang mở cửa",
+    },
+  ];
 
   return (
     <div>
-        <SortItem>並べ替え 
-        <SortBtn >関連</SortBtn>
-        <SortBtn >値段</SortBtn>
-        </SortItem>
+      <SortItem>
+        並べ替え
+        <SortBtn>関連</SortBtn>
+        <SortBtn>値段</SortBtn>
+      </SortItem>
+      <MainContainer>
+        <FilterContainer>
+          <CategoryDepartment>
+            <HeadDepartment>
+              <div>検索フィルター</div>
+            </HeadDepartment>
+            <MenuDepartment>
+              <ul>
+                {filters.map((filter) => (
+                  <li key={filter.id} onClick={() => setCateId(filter.id)}>
+                    <CategoryBox>
+                      <span>{filter.name}</span>
+                    </CategoryBox>
+                  </li>
+                ))}
+              </ul>
+            </MenuDepartment>
+          </CategoryDepartment>
+        </FilterContainer>
         <ProductContainer>
-            {/* <Link key={product.id} href={`/product/${product.id}`}> */}
-              <ProductItem>
-                <ProductImage>
-                  <Image
-                    src={product.photoURL}
-                    alt="product image"
-                    width={222}
-                    height={300}
-                  />
-                </ProductImage>
-                <ProductDescription>
-                  <h5>{product.pname}</h5>
-                  <ProductStar>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                  </ProductStar>
-                  <ProductInfo>
-                    <h4>{product.address}</h4>
-                  </ProductInfo>
-                </ProductDescription>
-              </ProductItem>
-            {/* </Link> */}
-            <ProductItem>
-                <ProductImage>
-                  <Image
-                    src={product.photoURL}
-                    alt="product image"
-                    width={222}
-                    height={300}
-                  />
-                </ProductImage>
-                <ProductDescription>
-                  <h5>{product.pname}</h5>
-                  <ProductStar>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                  </ProductStar>
-                  <ProductInfo>
-                    <h4>{product.address}</h4>
-                  </ProductInfo>
-                </ProductDescription>
-              </ProductItem>
-              <ProductItem>
-                <ProductImage>
-                  <Image
-                    src={product.photoURL}
-                    alt="product image"
-                    width={222}
-                    height={300}
-                  />
-                </ProductImage>
-                <ProductDescription>
-                  <h5>{product.pname}</h5>
-                  <ProductStar>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                    <span>
-                      <StarRateIcon />
-                    </span>
-                  </ProductStar>
-                  <ProductInfo>
-                    <h4>{product.address}</h4>
-                  </ProductInfo>
-                </ProductDescription>
-              </ProductItem>
+          {/* <Link key={product.id} href={`/product/${product.id}`}> */}
+          <ProductItem>
+            <ProductImage>
+              <Image
+                src={product.photoURL}
+                alt="product image"
+                width={222}
+                height={300}
+              />
+            </ProductImage>
+            <ProductDescription>
+              <h5>{product.pname}</h5>
+              <ProductStar>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+              </ProductStar>
+              <ProductInfo>
+                <h4>{product.address}</h4>
+              </ProductInfo>
+            </ProductDescription>
+          </ProductItem>
+          {/* </Link> */}
+          <ProductItem>
+            <ProductImage>
+              <Image
+                src={product.photoURL}
+                alt="product image"
+                width={222}
+                height={300}
+              />
+            </ProductImage>
+            <ProductDescription>
+              <h5>{product.pname}</h5>
+              <ProductStar>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+              </ProductStar>
+              <ProductInfo>
+                <h4>{product.address}</h4>
+              </ProductInfo>
+            </ProductDescription>
+          </ProductItem>
+          <ProductItem>
+            <ProductImage>
+              <Image
+                src={product.photoURL}
+                alt="product image"
+                width={222}
+                height={300}
+              />
+            </ProductImage>
+            <ProductDescription>
+              <h5>{product.pname}</h5>
+              <ProductStar>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+                <span>
+                  <StarRateIcon />
+                </span>
+              </ProductStar>
+              <ProductInfo>
+                <h4>{product.address}</h4>
+              </ProductInfo>
+            </ProductDescription>
+          </ProductItem>
         </ProductContainer>
+      </MainContainer>
     </div>
   );
 };
+
+const MainContainer = styled.div``;
+
+const FilterContainer = styled.div``;
+
+const CategoryDepartment = styled.div`
+  position: relative;
+  z-index: 10;
+  bottom: -24px;
+`;
+
+const HeadDepartment = styled.div`
+  position: relative;
+  width: 300px;
+  padding: 12px 24px;
+  background-color: #5d60e8;
+  border-radius: 7px 7px 0 0;
+  color: #fff;
+`;
+
+const MenuDepartment = styled.div`
+  position: absolute;
+  top: 100%;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #888;
+  border-top: 0;
+  border-bottom: 0;
+  li {
+    font-weight: 600;
+    border-bottom: 1px solid #888;
+    :hover {
+      background-color: #888;
+      color: #fff;
+    }
+  }
+`;
+
+const CategoryBox = styled.div`
+  cursor: pointer;
+  height: 46px;
+  font-size: 16px;
+  align-items: center;
+  padding: 10px 24px;
+`;
 
 const ProductContainer = styled.div`
   display: grid;
@@ -221,6 +297,5 @@ const ProductInfo = styled.div`
     color: #088178;
   }
 `;
-
 
 export default ProductLayout;
