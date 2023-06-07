@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Pagination from "@mui/material/Pagination";
 
 const ProductLayout = () => {
   const [cateId, setCateId] = useState("1");
@@ -122,7 +123,7 @@ const ProductLayout = () => {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
           sx={{
-            paddingTop: "20px",
+            padding: "20px 0",
           }}
         >
           {stores.map((store) => {
@@ -133,36 +134,10 @@ const ProductLayout = () => {
             );
           })}
         </Grid>
-        {/* <Container>
-          {stores.map((store) => {
-            return <StoreCard store={store} key={store.id} />;
-          })}
-        </Container> */}
+        <Pagination count={10} />
       </Box>
     </Container>
   );
 };
-
-const ProductContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-template-rows: auto;
-  grid-gap: 32px 28px;
-  margin-left: 200px;
-  margin-right: 100px;
-`;
-
-const SortBtn = styled.button`
-  font-size: 14px;
-  font-weight: 600;
-  background-color: #f3f4fa;
-  color: #000000;
-  border: #a3a1a1 1px solid;
-  border-radius: 7px;
-  cursor: pointer;
-  :hover {
-    background-color: #131392;
-  }
-`;
 
 export default ProductLayout;

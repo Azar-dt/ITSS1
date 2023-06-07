@@ -33,7 +33,14 @@ export default function Header() {
           >
             桜バイク
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button
+            color="inherit"
+            sx={{
+              fontWeight: 700,
+            }}
+          >
+            ログイン
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
