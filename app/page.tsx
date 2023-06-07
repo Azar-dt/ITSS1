@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "@/components/header";
+import Header from "@/components/Header";
 import Footer from "../components/Footer";
-import Sidebar from "@/components/SideBar";
+import SearchBar from "@/components/SearchBar";
 import ProductLayout from "@/components/ProductLayout";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Header />
       <Container>
-        <Sidebar />
+        <SearchBar />
         <ProductLayoutSection>
           <ProductLayout />
         </ProductLayoutSection>
