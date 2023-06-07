@@ -1,15 +1,21 @@
 import Image from "next/image";
-import StarRateIcon from "@mui/icons-material/StarRate";
 import styled from "styled-components";
 import photoURL from "../public/bicycle_1.png";
 import { useState } from "react";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
 
 const ProductLayout = () => {
   const [cateId, setCateId] = useState<string>("0");
-
+  const [value, setValue] = useState<number | null>(2);
   const product = {
     id: "1",
-    pname: "Store 1",
+    sname: "Store name 1",
     photoURL,
     description: "description here",
     address: "Hai Ba Trung, Ha Noi",
@@ -19,11 +25,15 @@ const ProductLayout = () => {
   const filters = [
     {
       id: "1",
-      name: "Gần nhất",
+      name: "一番近い",
     },
     {
       id: "2",
-      name: "Đang mở cửa",
+      name: "オープンしている",
+    },
+    {
+      id: "3",
+      name: "他の",
     },
   ];
 
@@ -33,6 +43,7 @@ const ProductLayout = () => {
         並べ替え
         <SortBtn>関連</SortBtn>
         <SortBtn>値段</SortBtn>
+        <SortBtn>距離</SortBtn>
       </SortItem>
       <MainContainer>
         <FilterContainer>
@@ -56,95 +67,150 @@ const ProductLayout = () => {
         <ProductContainer>
           {/* <Link key={product.id} href={`/product/${product.id}`}> */}
           <ProductItem>
-            <ProductImage>
-              <Image
-                src={product.photoURL}
-                alt="product image"
-                width={222}
-                height={300}
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
               />
-            </ProductImage>
-            <ProductDescription>
-              <h5>{product.pname}</h5>
-              <ProductStar>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-              </ProductStar>
-              <ProductInfo>
-                <h4>{product.address}</h4>
-              </ProductInfo>
-            </ProductDescription>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {product.sname}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {product.description} <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {5} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
           </ProductItem>
+          
           {/* </Link> */}
           <ProductItem>
-            <ProductImage>
-              <Image
-                src={product.photoURL}
-                alt="product image"
-                width={222}
-                height={300}
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
               />
-            </ProductImage>
-            <ProductDescription>
-              <h5>{product.pname}</h5>
-              <ProductStar>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-              </ProductStar>
-              <ProductInfo>
-                <h4>{product.address}</h4>
-              </ProductInfo>
-            </ProductDescription>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Store名
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description of Store <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {4} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
           </ProductItem>
           <ProductItem>
-            <ProductImage>
-              <Image
-                src={product.photoURL}
-                alt="product image"
-                width={222}
-                height={300}
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
               />
-            </ProductImage>
-            <ProductDescription>
-              <h5>{product.pname}</h5>
-              <ProductStar>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-                <span>
-                  <StarRateIcon />
-                </span>
-              </ProductStar>
-              <ProductInfo>
-                <h4>{product.address}</h4>
-              </ProductInfo>
-            </ProductDescription>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Store名
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description of Store <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {3} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
+          </ProductItem>
+          <ProductItem>
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Store名
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description of Store <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {3} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
+          </ProductItem>
+          <ProductItem>
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Store名
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description of Store <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {3} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
+          </ProductItem>
+          <ProductItem>
+            <Card sx={{ maxWidth: 305, borderRadius: '25px', padding: '30px 12px' }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="120"
+                image={product.photoURL.src}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  Store名
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Description of Store <br/><br/>
+                  Address:{product.address}
+                </Typography>
+              </CardContent>
+              <Typography component="legend">評価</Typography>
+              <Rating name="read-only" value = {3} readOnly />
+              <CardActions>
+                <Button size="small" sx ={{  marginLeft: '90px'}}>もっと見る</Button>
+              </CardActions>
+            </Card>
           </ProductItem>
         </ProductContainer>
       </MainContainer>
@@ -202,6 +268,8 @@ const ProductContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-template-rows: auto;
   grid-gap: 32px 28px;
+  margin-left: 200px;
+  margin-right: 100px;
 `;
 
 const SortBtn = styled.button`
@@ -239,62 +307,17 @@ const ProductItem = styled.div`
   position: relative;
   width: 25%;
   height: 100%;
-  min-width: 250px;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
-  padding: 30px 12px;
-  margin-left: 280px;
-  border: 1px solid #84dd92;
-  border-radius: 25px;
+  padding: 0px 10px;
+  margin-left:150px;
   cursor: pointer;
   box-shadow: 16px 16px 30px rgba(0, 0, 0, 0.02);
   /* margin: 15px 0; */
   transition: all 0.2s ease;
   :hover {
-    background-color: #63dd75;
-  }
-`;
-
-const ProductImage = styled.div`
-  flex-shrink: 0;
-  img {
-    object-fit: cover;
-    border-radius: 20px;
-  }
-`;
-
-const ProductDescription = styled.div`
-  flex: 1;
-  text-align: start;
-  padding: 10px 0;
-  span {
-    color: #606063;
-    font-size: 12px;
-  }
-  h5 {
-    padding-top: 7px;
-    color: #1a1a1a;
-    font-size: 14px;
-  }
-`;
-
-const ProductStar = styled.div`
-  span {
-    color: rgb(240, 225, 18);
-  }
-  margin-bottom: 16px;
-`;
-
-const ProductInfo = styled.div`
-  position: absolute;
-  bottom: 20px;
-  left: 10px;
-  h4 {
-    padding-left: 7px;
-    padding-bottom: 4px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #088178;
+    background-color: #d4e8d7;
   }
 `;
 
