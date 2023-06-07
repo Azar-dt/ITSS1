@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
 First, run the development server:
@@ -14,21 +12,52 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## WorkFlow
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The most important rule of this workflow, is that the developer who is writing the code is responsible for making sure it goes through the entire process smoothly and in a timely manner.
 
-## Learn More
+## New Code
 
-To learn more about Next.js, take a look at the following resources:
+### Create Branch
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Update the **main** branches to latest version(s)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Always branch from the place it will be merged back into
 
-## Deploy on Vercel
+2. Create branch
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- git checkout -b [branch_name] (ex: git checkout -b issue_2)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Make Changes
+
+3. Make change
+
+- Make sure all watch tasks are running (build, unit tests)
+
+4. Test
+
+- Run full test suite locally
+
+5. Commit with descriptive name
+
+- prefix with `[WIP]` ("work in progress") if task not done yet
+
+### Push changes
+
+6. git push origin [branch_name]
+
+### Pull Request
+
+7. Open pull request into a **main** branch
+   - title: Issue_XX: [description]
+
+### Code Review
+
+8. Other devs should review code and leave notes
+
+   - no confusing code
+   - check for potential issues
+   - any architectual improvements
+
+9. Code owner is responsible for making any necessary fixes any pushing them up
+   - Follow same commit process
