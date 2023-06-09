@@ -1,14 +1,13 @@
 "use client";
-import { NextPage } from "next";
+
 import { useEffect, useState } from "react";
 
 const About = () => {
-  const [posts, setPosts] = useState();
+  const [_posts, setPosts] = useState();
   useEffect(() => {
     const fetchTest = async () => {
       const res = await fetch("http://localhost:3000/api/post");
       const data = await res.json();
-      console.log(data);
       setPosts(data);
     };
     fetchTest();

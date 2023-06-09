@@ -39,7 +39,13 @@ module.exports = {
   ],
 
   rules: {
-    "@typescript-eslint/no-unused-vars": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+      },
+    ],
     "@typescript-eslint/no-explicit-any": "error",
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": "off",
