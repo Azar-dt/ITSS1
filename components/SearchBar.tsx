@@ -8,39 +8,37 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const SearchBar = () => {
   return (
-    <>
-      <SubHeader>
-        <SearchContainer>
-          <Search>
-            <StyledInputBase
-              placeholder="ストア検索"
-              inputProps={{ "aria-label": "search" }}
-            />
-            <IconButton
-              aria-label="search"
-              size="large"
+    <SubHeader>
+      <SearchContainer>
+        <Search>
+          <StyledInputBase
+            placeholder="ストア検索"
+            inputProps={{ "aria-label": "search" }}
+          />
+          <IconButton
+            aria-label="search"
+            size="large"
+            sx={{
+              backgroundColor: "#1b65d4",
+              // change hover color
+              "&:hover": {
+                backgroundColor: "#073b88",
+              },
+            }}
+          >
+            <SearchIcon
+              fontSize="inherit"
               sx={{
-                backgroundColor: "#1b65d4",
-                // change hover color
-                "&:hover": {
-                  backgroundColor: "#073b88",
-                },
+                color: "#fff",
               }}
-            >
-              <SearchIcon
-                fontSize="inherit"
-                sx={{
-                  color: "#fff",
-                }}
-              />
-            </IconButton>
-          </Search>
-        </SearchContainer>
-        <Button variant="contained" size="large" endIcon={<LocationOnIcon />}>
-          位置
-        </Button>
-      </SubHeader>
-    </>
+            />
+          </IconButton>
+        </Search>
+      </SearchContainer>
+      <Button variant="contained" size="large" endIcon={<LocationOnIcon />}>
+        位置
+      </Button>
+    </SubHeader>
   );
 };
 

@@ -1,7 +1,6 @@
 import prisma from "@/prisma/client";
-import { NextApiRequest } from "next";
 
-export async function GET(req: NextApiRequest) {
+export async function GET() {
   const posts = await prisma.post.findMany();
-  return new Response(JSON.stringify({ posts: posts }), { status: 200 });
+  return new Response(JSON.stringify({ posts }), { status: 200 });
 }
