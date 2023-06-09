@@ -3,11 +3,18 @@
 import { useEffect, useState } from "react";
 
 const About = () => {
-  const [_posts, setPosts] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [_posts, setPosts] = useState<any>();
   useEffect(() => {
     const fetchTest = async () => {
-      const res = await fetch("http://localhost:3000/api/post");
-      const data = await res.json();
+      // const res = await fetch("http://localhost:3000/api/post");
+      // const data = await res.json();
+      const data = [
+        {
+          id: "1",
+          name: "Store name 1",
+        },
+      ];
       setPosts(data);
     };
     fetchTest();
