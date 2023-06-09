@@ -6,9 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
-type Props = {};
-
-export const FilterList: React.FC<Props> = ({}) => {
+export const FilterList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (

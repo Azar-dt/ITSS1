@@ -1,10 +1,10 @@
 "use client";
 
 import Header from "@/components/Header";
-import Footer from "../components/Footer";
 import SearchBar from "@/components/SearchBar";
 import ProductLayout from "@/components/ProductLayout";
 import styled from "styled-components";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
@@ -20,6 +20,7 @@ export default function Home() {
     </>
   );
 }
+
 const Container = styled.div`
   padding: 0 20px;
 `;
