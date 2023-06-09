@@ -1,45 +1,41 @@
-import styled from "styled-components";
-import photoURL from "../public/bicycle_1.png";
-import { StoreCard } from "./StoreCard";
-import { useState } from "react";
 import Container from "@mui/material/Container";
-import { FilterList } from "./FilterList";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
+import { FilterList } from "./FilterList";
+import { StoreCard } from "./StoreCard";
+import photoURL from "../public/bicycle_1.png";
 
 const ProductLayout = () => {
-  const [cateId, setCateId] = useState("1");
-
-  //mock data
+  // mock data
   const stores = [
     {
       id: "1",
       name: "Store name 1",
       photoURL: photoURL.src,
-      description: "description here",
-      address: "Hai Ba Trung, Ha Noi",
+      description: "description here ad",
+      address: "Hai Ba Trung, Ha Noi s",
       quantity: "10",
       rating: 3,
     },
     {
       id: "2",
-      name: "Store name 2",
+      name: "Store name 3",
       photoURL: photoURL.src,
-      description: "description here",
-      address: "Hai Ba Trung, Ha Noi",
+      description: "description here adf",
+      address: "Hai Ba Trung, Ha Noi sdf",
       quantity: "10",
       rating: 5,
     },
     {
       id: "2",
-      name: "Store name 2",
+      name: "Store name 4",
       photoURL: photoURL.src,
-      description: "description here",
-      address: "Hai Ba Trung, Ha Noi",
+      description: "description here adsfg",
+      address: "Hai Ba Trung, Ha Noi sfd",
       quantity: "10",
       rating: 5,
     },
@@ -63,21 +59,6 @@ const ProductLayout = () => {
     },
   ];
 
-  const filters = [
-    {
-      id: "1",
-      name: "一番近い",
-    },
-    {
-      id: "2",
-      name: "オープンしている",
-    },
-    {
-      id: "3",
-      name: "他の",
-    },
-  ];
-
   return (
     <Container
       sx={{
@@ -88,7 +69,7 @@ const ProductLayout = () => {
     >
       <FilterList />
       <Box
-        component={"div"}
+        component="div"
         sx={{
           flexGrow: 1,
         }}

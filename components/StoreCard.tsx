@@ -1,3 +1,4 @@
+import React from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -60,7 +61,6 @@ const ProductItem = styled.div`
   padding: 0px 10px;
   cursor: pointer;
   box-shadow: 16px 16px 30px rgba(0, 0, 0, 0.02);
-  /* margin: 15px 0; */
   transition: all 0.2s ease;
   :hover {
     background-color: #d4e8d7;
