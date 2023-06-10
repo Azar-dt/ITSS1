@@ -51,8 +51,9 @@ enum BikeType {
     SCOOTER
     MANUAL
     OFF_ROAD
-    CC150
     BIG_DISPLACEMENT
+    CC150
+    CC125
     CC50
 }
 model Bike {
