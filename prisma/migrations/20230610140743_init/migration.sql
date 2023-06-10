@@ -2,6 +2,9 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'STORE_MANAGER', 'CUSTOMER');
 
 -- CreateEnum
+CREATE TYPE "BikeType" AS ENUM ('SCOOTER', 'MANUAL', 'OFF_ROAD', 'CC150', 'BIG_DISPLACEMENT', 'CC50');
+
+-- CreateEnum
 CREATE TYPE "Status" AS ENUM ('REQUESTED', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'COMPLETED');
 
 -- CreateTable
@@ -40,7 +43,7 @@ CREATE TABLE "Bike" (
     "storeId" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "BikeType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

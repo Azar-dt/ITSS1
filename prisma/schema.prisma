@@ -47,13 +47,21 @@ model Store {
   updatedAt      DateTime @updatedAt
 }
 
+enum BikeType {
+    SCOOTER
+    MANUAL
+    OFF_ROAD
+    CC150
+    BIG_DISPLACEMENT
+    CC50
+}
 model Bike {
   id        Int      @id @default(autoincrement())
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId   Int
   name      String   @unique
   price     Float
-  type      String
+  type      BikeType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Order     Order[]
