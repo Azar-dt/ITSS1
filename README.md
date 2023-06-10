@@ -40,8 +40,6 @@ The most important rule of this workflow, is that the developer who is writing t
 
 5. Commit with descriptive name
 
-- prefix with `[WIP]` ("work in progress") if task not done yet
-
 ### Push changes
 
 6. git push origin [branch_name]
@@ -50,6 +48,15 @@ The most important rule of this workflow, is that the developer who is writing t
 
 7. Open pull request into a **main** branch
    - title: Issue_XX: [description]
+   - If pull request have **CONFLICT**
+     - git checkout main
+     - git pull origin main
+     - git checkout [branch_name]
+     - git merge main
+     - **fix all conflicts in local**
+     - git add .
+     - git commit -m "[branch_name] fix conflict"
+     - git push origin [branch_name]
 
 ### Code Review
 
