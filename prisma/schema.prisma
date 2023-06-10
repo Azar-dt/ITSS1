@@ -10,22 +10,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// link demo database https://dbdiagram.io/d/643d63436b31947051bbca25
+
+enum Role {
+  ADMIN
+  STORE_MANAGER
+  CUSTOMER
+}
+
 model User {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   email     String   @unique
-  name      String?
+  userName  String
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  posts     Post[]
+  role      Role     @default(CUSTOMER)
+  store     Store?
+  Order     Order[]
+  Review    Review[]
 }
 
-model Post {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
+model Store {
+  id             Int      @id @default(autoincrement())
+  storeManager   User     @relation(fields: [storeManagerId], references: [id], onDelete: Cascade)
+  storeManagerId Int      @unique
+  name           String   @unique
+  address        String
+  bio            String
+  email          String
+  phoneNumber    String
+  longitude      Float
+  latitude       Float
+  bikes          Bike[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Bike {
+  id        Int      @id @default(autoincrement())
+  store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId   Int
+  name      String   @unique
+  price     Float
+  type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  Order     Order[]
+  Review    Review[]
+}
+
+enum Status {
+  REQUESTED
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+model Order {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
+  bikeId    Int
+  startTime DateTime
+  endTime   DateTime
+  status    Status  @default(REQUESTED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
+  bikeId    Int
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
