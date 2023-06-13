@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { useRouter } from "next/navigation";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Skeleton } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 
@@ -54,20 +54,33 @@ export default function Header() {
             variant="h6"
             component="div"
             fontSize={48}
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            sx={{
+              display: "flex",
+              mr: 1,
+              userSelect: "none",
+              ":hover": {
+                cursor: "pointer",
+              },
+            }}
           >
             🌸
           </Typography>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1 }}
+            sx={{
+              flexGrow: 1,
+              userSelect: "none",
+            }}
             fontWeight={700}
             fontSize={32}
+            onClick={() => router.push("/")}
           >
             桜バイク
           </Typography>
-          {data && !isLoading ? (
+          {isLoading ? (
+            <Skeleton variant="circular" width={40} height={40} />
+          ) : data ? (
             <div>
               <IconButton
                 aria-label="account of current user"
