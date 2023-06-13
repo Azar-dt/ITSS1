@@ -1,14 +1,14 @@
-import * as React from "react";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { AccountCircle } from "@mui/icons-material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import useCurrentUser from "@/hooks/useCurrentUser";
-import { useRouter } from "next/navigation";
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 
 export default function Header() {
   const { data, isLoading } = useCurrentUser();

@@ -1,13 +1,13 @@
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import photoURL from "../public/bicycle_1.png";
 import { FilterList } from "./FilterList";
 import { StoreCard } from "./StoreCard";
-import photoURL from "../public/bicycle_1.png";
 
 const ProductLayout = () => {
   // mock data

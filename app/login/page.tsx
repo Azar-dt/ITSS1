@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import {
   Button,
   FormControl,
@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
-import toast from "react-hot-toast";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type LoginForm = {
   email: string;

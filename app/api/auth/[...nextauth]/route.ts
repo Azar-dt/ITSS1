@@ -1,8 +1,8 @@
+import prisma from "@/prisma/client";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import argon2 from "argon2";
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "@/prisma/client";
-import argon2 from "argon2";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
