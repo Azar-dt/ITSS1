@@ -31,7 +31,7 @@ const ProductLayout = () => {
       rating: 5,
     },
     {
-      id: "2",
+      id: "3",
       name: "Store name 4",
       photoURL: photoURL.src,
       description: "description here adsfg",
@@ -40,7 +40,7 @@ const ProductLayout = () => {
       rating: 5,
     },
     {
-      id: "2",
+      id: "4",
       name: "Store name 2",
       photoURL: photoURL.src,
       description: "description here",
@@ -49,7 +49,7 @@ const ProductLayout = () => {
       rating: 1,
     },
     {
-      id: "2",
+      id: "5",
       name: "Store name 2",
       photoURL: photoURL.src,
       description: "description here",

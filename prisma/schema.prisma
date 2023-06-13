@@ -19,22 +19,22 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   email     String   @unique
-  userName  String
-  password  String
+  username  String
+  password  String   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   role      Role     @default(CUSTOMER)
   store     Store?
-  Order     Order[]
-  Review    Review[]
+  orders     Order[]
+  reviews    Review[]
 }
 
 model Store {
   id             Int      @id @default(autoincrement())
   storeManager   User     @relation(fields: [storeManagerId], references: [id], onDelete: Cascade)
-  storeManagerId Int      @unique
+  storeManagerId String      @unique
   name           String   @unique
   address        String
   bio            String
@@ -65,8 +65,8 @@ model Bike {
   type      BikeType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Order     Order[]
-  Review    Review[]
+  orders     Order[]
+  reviews    Review[]
 }
 
 enum Status {
@@ -79,7 +79,7 @@ enum Status {
 model Order {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
   bikeId    Int
   startTime DateTime
@@ -92,7 +92,7 @@ model Order {
 model Review {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
   bikeId    Int
   rating    Int

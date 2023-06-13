@@ -1,10 +1,10 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import SearchBar from "@/components/SearchBar";
 import ProductLayout from "@/components/ProductLayout";
+import SearchBar from "@/components/SearchBar";
 import styled from "styled-components";
-import Footer from "../components/Footer";
 
 export default function Home() {
   return (

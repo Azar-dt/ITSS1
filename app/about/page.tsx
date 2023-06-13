@@ -1,32 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-type Post = {
-  id: number;
-  title: string;
-};
+import fetcher from "@/libs/fetcher";
+import { Store } from "@prisma/client";
+import useSWR from "swr";
 
 const About = () => {
-  const [posts, setPosts] = useState<Post[]>();
-  useEffect(() => {
-    const fetchTest = async () => {
-      const res = await fetch("/api/posts");
-      const data = await res.json();
-
-      setPosts(data.posts);
-    };
-    fetchTest();
-  }, []);
+  const { data, isLoading } = useSWR<{
+    stores: Store[];
+  }>("/api/stores", fetcher);
   return (
     <div>
       <h1>About</h1>
       <p>This is the about page</p>
-      {posts &&
-        posts.map((post) => {
+      {data?.stores &&
+        data.stores.map((store) => {
           return (
-            <div key={post.id}>
-              <h2>{post.title}</h2>
+            <div key={store.id}>
+              <h2>{store.name}</h2>
             </div>
           );
         })}
