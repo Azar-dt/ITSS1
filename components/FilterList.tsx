@@ -1,10 +1,10 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import * as React from "react";
 
 export const FilterList = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
