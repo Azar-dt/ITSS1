@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "db:migrate": "prisma migrate dev",
     "lint": "next lint",
     "lint-staged": "lint-staged",
     "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
