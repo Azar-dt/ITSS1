@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { email, username, password } = await req.json();
+    const { email, username, password, role } = await req.json();
     if (!email || !username || !password) {
       throw new Error("Please fill all fields");
     }
@@ -22,6 +22,7 @@ export async function POST(req: Request) {
         email,
         username,
         password: hashedPassword,
+        role,
       },
     });
 

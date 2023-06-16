@@ -5,58 +5,64 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import {
   Button,
   FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { signIn } from "next-auth/react";
+import { Role } from "@prisma/client";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-type LoginForm = {
+type RegisterForm = {
   email: string;
+  username: string;
   password: string;
+  role: Role;
 };
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
   const { data, isLoading } = useCurrentUser();
 
-  const [loginForm, setLoginForm] = useState<LoginForm>({
+  const [registerForm, setRegisterForm] = useState<RegisterForm>({
     email: "",
+    username: "",
     password: "",
+    role: Role.CUSTOMER,
   });
 
   useEffect(() => {
     if (data) {
       router.push("/");
     }
-  }, [data]);
+  }, [data, router]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginForm({ ...loginForm, [name]: value });
+    setRegisterForm({ ...registerForm, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await signIn("credentials", {
-      email: loginForm.email,
-      password: loginForm.password,
-      redirect: false,
-    });
+    const res = await axios.post("/api/register", registerForm);
 
-    if (res?.error) {
-      toast.error(`ログインに失敗しました\n${res.error}`);
+    if (res?.status !== 200) {
+      toast.error(`サインアップに失敗しました\n${res.statusText}`);
       return;
     }
 
-    toast.success("ログインしました");
-    router.push("/");
+    toast.success("サインアップしました");
+    router.push("/login");
   };
 
   return (
@@ -90,12 +96,12 @@ const Login = () => {
             }}
           >
             <Typography variant="h4" sx={{ paddingBottom: "16px" }}>
-              ログイン
+              サインアップ
             </Typography>
             <FormControl fullWidth>
               <TextField
                 name="email"
-                value={loginForm.email}
+                value={registerForm.email}
                 type="text"
                 label="メール"
                 variant="outlined"
@@ -105,16 +111,47 @@ const Login = () => {
             </FormControl>
             <FormControl fullWidth>
               <TextField
+                name="username"
+                value={registerForm.username}
+                type="text"
+                label="ユーザー名"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField
                 name="password"
-                value={loginForm.password}
+                value={registerForm.password}
                 type="password"
                 label="パスワード"
                 variant="outlined"
                 onChange={handleChange}
               />
             </FormControl>
+            <FormControl fullWidth>
+              <FormLabel id="role">役割</FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="role"
+                value={registerForm.role}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value={Role.CUSTOMER}
+                  control={<Radio />}
+                  label="ユーザー"
+                />
+                <FormControlLabel
+                  value={Role.STORE_MANAGER}
+                  control={<Radio />}
+                  label="店長"
+                />
+              </RadioGroup>
+            </FormControl>
             <Button variant="contained" type="submit" fullWidth>
-              ログイン
+              サインアップ
             </Button>
             <Box
               component={"div"}
@@ -128,7 +165,7 @@ const Login = () => {
                 },
               }}
             >
-              アカウントをお持ちでない方は<Link href="/register">こちら</Link>
+              アカウントをお持ちでない方は<Link href="/signup">こちら</Link>
             </Box>
           </Box>
         </Container>
@@ -137,4 +174,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
