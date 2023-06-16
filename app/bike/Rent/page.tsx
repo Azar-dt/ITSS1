@@ -16,7 +16,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const Img = styled('img')({
     // margin: 'auto',
     // display: 'block',
