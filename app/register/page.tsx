@@ -165,7 +165,8 @@ const Register = () => {
                 },
               }}
             >
-              アカウントをお持ちでない方は<Link href="/signup">こちら</Link>
+              アカウントをお持ちですか？
+              <Link href="/login">こちら</Link>
             </Box>
           </Box>
         </Container>
