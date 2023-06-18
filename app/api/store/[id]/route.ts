@@ -7,12 +7,11 @@ export async function GET(
 ) {
   try {
     const { id } = params;
-    const store = await prisma.store.findUnique({
+    const store = await prisma.store.findUniqueOrThrow({
       where: {
         id: Number(id),
       },
     });
-    if (!store) throw new Error("Store not found");
     return NextResponse.json(store);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
