@@ -4,9 +4,38 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { styled as styledMui } from "@mui/material/styles";
+import React from "react";
+import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
-const SearchBar = () => {
+type Props = {
+  storeName: string;
+  setStoreName: (storeName: string) => void;
+  setStoreAddress: (storeAddress: {
+    longitude?: number;
+    latitude?: number;
+  }) => void;
+};
+
+const SearchBar: React.FC<Props> = ({
+  storeName,
+  setStoreName,
+  setStoreAddress,
+}) => {
+  const handleGetUserAddress = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setStoreAddress({
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+        });
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+  };
+
   return (
     <SubHeader>
       <SearchContainer>
@@ -14,6 +43,8 @@ const SearchBar = () => {
           <StyledInputBase
             placeholder="ストア検索"
             inputProps={{ "aria-label": "search" }}
+            value={storeName}
+            onChange={(e) => setStoreName(e.target.value)}
           />
           <IconButton
             aria-label="search"
@@ -35,7 +66,12 @@ const SearchBar = () => {
           </IconButton>
         </Search>
       </SearchContainer>
-      <Button variant="contained" size="large" endIcon={<LocationOnIcon />}>
+      <Button
+        variant="contained"
+        size="large"
+        endIcon={<LocationOnIcon />}
+        onClick={handleGetUserAddress}
+      >
         位置
       </Button>
     </SubHeader>

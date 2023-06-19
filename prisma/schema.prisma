@@ -34,14 +34,16 @@ model User {
 model Store {
   id             Int      @id @default(autoincrement())
   storeManager   User     @relation(fields: [storeManagerId], references: [id], onDelete: Cascade)
-  storeManagerId String      @unique
-  name           String   @unique
+  storeManagerId String   @unique
+  name           String   
+  imgUrl         String
   address        String
   bio            String
   email          String
   phoneNumber    String
   longitude      Float
   latitude       Float
+  rating         Float
   bikes          Bike[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -61,8 +63,10 @@ model Bike {
   store     Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   storeId   Int
   name      String   @unique
+  imgUrl    String
   price     Float
   type      BikeType
+  rating    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   orders     Order[]
