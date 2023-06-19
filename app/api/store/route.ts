@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { Store } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -12,9 +13,10 @@ export async function GET(req: NextRequest) {
     const longitude = searchParams.get("longitude");
     const latitude = searchParams.get("latitude");
     const radius = searchParams.get("radius");
+    let stores: Store[] = [];
 
     // get all stores from db using prisma
-    const stores = await prisma.store.findMany({
+    stores = await prisma.store.findMany({
       where: {
         name: {
           contains: name || "",
@@ -31,23 +33,29 @@ export async function GET(req: NextRequest) {
     if (longitude && latitude) {
       // sort stores by distance
       stores.sort((a, b) => {
-        const distanceA = Math.sqrt(
-          (a.longitude - Number(longitude)) ** 2 +
-            (a.latitude - Number(latitude)) ** 2
+        const distanceA = getDistance(
+          a.latitude,
+          a.longitude,
+          Number(latitude),
+          Number(longitude)
         );
-        const distanceB = Math.sqrt(
-          (b.longitude - Number(longitude)) ** 2 +
-            (b.latitude - Number(latitude)) ** 2
+        const distanceB = getDistance(
+          b.latitude,
+          b.longitude,
+          Number(latitude),
+          Number(longitude)
         );
         return distanceA - distanceB;
       });
 
       // filter stores by radius
       if (radius) {
-        stores.filter((store) => {
-          const distance = Math.sqrt(
-            (store.longitude - Number(longitude)) ** 2 +
-              (store.latitude - Number(latitude)) ** 2
+        stores = stores.filter((store) => {
+          const distance = getDistance(
+            store.latitude,
+            store.longitude,
+            Number(latitude),
+            Number(longitude)
           );
           return distance <= Number(radius);
         });
@@ -56,14 +64,42 @@ export async function GET(req: NextRequest) {
 
     // pagination
     const total = stores.length;
-    const data = stores.slice(cursor, cursor + take);
-    data.sort((a, b) => b.rating - a.rating);
+    stores = stores.slice(cursor, cursor + take);
+    stores.sort((a, b) => b.rating - a.rating);
 
     return NextResponse.json({
       total,
-      stores: data,
+      stores,
     });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+}
+
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const earthRadius = 6371; // Earth's radius in kilometers
+
+  // Convert latitude and longitude to radians
+  const radLat1 = toRadians(lat1);
+  const radLon1 = toRadians(lon1);
+  const radLat2 = toRadians(lat2);
+  const radLon2 = toRadians(lon2);
+
+  // Calculate the differences between latitudes and longitudes
+  const deltaLat = radLat2 - radLat1;
+  const deltaLon = radLon2 - radLon1;
+
+  // Use the Haversine formula to calculate the distance
+  const a =
+    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+    Math.cos(radLat1) *
+      Math.cos(radLat2) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadius * c;
+}
+
+function toRadians(degrees: number) {
+  return degrees * (Math.PI / 180);
 }
