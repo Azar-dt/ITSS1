@@ -5,59 +5,40 @@ import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import photoURL from "../public/bicycle_1.png";
+import { Store } from "@prisma/client";
+import React from "react";
 import { FilterList } from "./FilterList";
 import { StoreCard } from "./StoreCard";
 
-const ProductLayout = () => {
-  // mock data
-  const stores = [
-    {
-      id: "1",
-      name: "Store name 1",
-      photoURL: photoURL.src,
-      description: "description here ad",
-      address: "Hai Ba Trung, Ha Noi s",
-      quantity: "10",
-      rating: 3,
-    },
-    {
-      id: "2",
-      name: "Store name 3",
-      photoURL: photoURL.src,
-      description: "description here adf",
-      address: "Hai Ba Trung, Ha Noi sdf",
-      quantity: "10",
-      rating: 5,
-    },
-    {
-      id: "3",
-      name: "Store name 4",
-      photoURL: photoURL.src,
-      description: "description here adsfg",
-      address: "Hai Ba Trung, Ha Noi sfd",
-      quantity: "10",
-      rating: 5,
-    },
-    {
-      id: "4",
-      name: "Store name 2",
-      photoURL: photoURL.src,
-      description: "description here",
-      address: "Hai Ba Trung, Ha Noi",
-      quantity: "10",
-      rating: 1,
-    },
-    {
-      id: "5",
-      name: "Store name 2",
-      photoURL: photoURL.src,
-      description: "description here",
-      address: "Hai Ba Trung, Ha Noi",
-      quantity: "10",
-      rating: 4,
-    },
-  ];
+type Props = {
+  data: {
+    total: number;
+    stores: Store[];
+  };
+  cursor: number;
+  setCursor: (cursor: number) => void;
+  take: number;
+  setStoreAddress: (storeAddress: {
+    longitude?: number;
+    latitude?: number;
+  }) => void;
+  setRadius: (radius: number | null) => void;
+};
+
+const ProductLayout: React.FC<Props> = ({
+  data,
+  cursor,
+  setCursor,
+  take,
+  setStoreAddress,
+  setRadius,
+}) => {
+  const handlePagination = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCursor((value - 1) * take);
+  };
 
   return (
     <Container
@@ -67,7 +48,7 @@ const ProductLayout = () => {
         gap: "20px",
       }}
     >
-      <FilterList />
+      <FilterList setStoreAddress={setStoreAddress} setRadius={setRadius} />
       <Box
         component="div"
         sx={{
@@ -107,7 +88,7 @@ const ProductLayout = () => {
             padding: "20px 0",
           }}
         >
-          {stores.map((store) => {
+          {data.stores.map((store) => {
             return (
               <Grid item key={store.id} xs={2} sm={4} md={4}>
                 <StoreCard store={store} key={store.id} />
@@ -115,7 +96,11 @@ const ProductLayout = () => {
             );
           })}
         </Grid>
-        <Pagination count={10} />
+        <Pagination
+          count={(data.total - 1) / take + 1}
+          onChange={handlePagination}
+          page={cursor / take + 1}
+        />
       </Box>
     </Container>
   );

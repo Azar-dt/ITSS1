@@ -1,22 +1,16 @@
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
+import { Store } from "@prisma/client";
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
 type Props = {
-  store: {
-    id: string;
-    name: string;
-    description: string;
-    photoURL: string;
-    address: string;
-    rating: number;
-  };
+  store: Store;
 };
 
 export const StoreCard: React.FC<Props> = ({ store }) => {
@@ -27,24 +21,36 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
           component="img"
           alt="green iguana"
           height="120"
-          image={store.photoURL}
+          image={store.imgUrl}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {store.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {store.description} <br />
+            {store.bio} <br />
             <br />
-            Address:{store.address}
+            住所:{store.address}
           </Typography>
         </CardContent>
         <Typography component="legend">評価</Typography>
-        <Rating name="read-only" value={store.rating} readOnly />
-        <CardActions>
-          <Button size="small" sx={{ marginLeft: "90px" }}>
-            もっと見る
-          </Button>
+        <Rating
+          name="read-only"
+          value={store.rating}
+          readOnly
+          precision={0.5}
+        />
+        <CardActions
+          sx={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+            a: {
+              textDecoration: "none",
+            },
+          }}
+        >
+          <Link href={`/store/${store.id}`}>もっと見る</Link>
         </CardActions>
       </Card>
     </ProductItem>
