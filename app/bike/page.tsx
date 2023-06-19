@@ -1,50 +1,53 @@
+/* eslint-disable max-len */
+
 "use client";
-import * as React from 'react';
+
 import Header from "@/components/Header";
-import Tabs from '@mui/base/Tabs';
-import TabsList from '@mui/base/TabsList';
-import TabPanel from '@mui/base/TabPanel';
-import { buttonClasses } from '@mui/base/Button';
-import Tab, { tabClasses } from '@mui/base/Tab';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import TtyIcon from '@mui/icons-material/Tty';
-import Typography from '@mui/material/Typography';
-import ButtonBase from '@mui/material/ButtonBase';
-import { Box, Grid } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Button from '@mui/material/Button';
+import { buttonClasses } from "@mui/base/Button";
+import Tab, { tabClasses } from "@mui/base/Tab";
+import TabPanel from "@mui/base/TabPanel";
+import Tabs from "@mui/base/Tabs";
+import TabsList from "@mui/base/TabsList";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import TtyIcon from "@mui/icons-material/Tty";
+import { Box, Grid } from "@mui/material";
+import Button from "@mui/material/Button";
+import ButtonBase from "@mui/material/ButtonBase";
+import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
 import styled1 from "styled-components";
-import { styled } from '@mui/system';
-const Img = styled('img')({
+
+const Img = styled("img")({
   // margin: 'auto',
   // display: 'block',
-  maxWidth: '100%',
-  maxHeight: '100%',
+  maxWidth: "100%",
+  maxHeight: "100%",
 });
 const blue = {
-  50: '#F0F7FF',
-  100: '#C2E0FF',
-  200: '#80BFFF',
-  300: '#66B2FF',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0059B2',
-  800: '#004C99',
-  900: '#003A75',
+  50: "#F0F7FF",
+  100: "#C2E0FF",
+  200: "#80BFFF",
+  300: "#66B2FF",
+  400: "#3399FF",
+  500: "#007FFF",
+  600: "#0072E5",
+  700: "#0059B2",
+  800: "#004C99",
+  900: "#003A75",
 };
 
 const grey = {
-  50: '#f6f8fa',
-  100: '#eaeef2',
-  200: '#d0d7de',
-  300: '#afb8c1',
-  400: '#8c959f',
-  500: '#6e7781',
-  600: '#57606a',
-  700: '#424a53',
-  800: '#32383f',
-  900: '#24292f',
+  50: "#f6f8fa",
+  100: "#eaeef2",
+  200: "#d0d7de",
+  300: "#afb8c1",
+  400: "#8c959f",
+  500: "#6e7781",
+  600: "#57606a",
+  700: "#424a53",
+  800: "#32383f",
+  900: "#24292f",
 };
 
 const StyledTab = styled(Tab)`
@@ -98,8 +101,10 @@ const StyledTabsList = styled(TabsList)(
   align-items: center;
   justify-content: center;
   align-content: space-between;
-  box-shadow: 0px 4px 8px ${theme.palette.mode === 'dark' ? grey[900] : grey[200]};
-  `,
+  box-shadow: 0px 4px 8px ${
+    theme.palette.mode === "dark" ? grey[900] : grey[200]
+  };
+  `
 );
 
 const theme = createTheme({
@@ -109,7 +114,7 @@ const theme = createTheme({
   },
 });
 
-const theme_tiltle = createTheme({
+const themeTiltle = createTheme({
   typography: {
     // Tell MUI what the font-size on the html element is.
     htmlFontSize: 4,
@@ -143,16 +148,15 @@ export default function UnstyledTabsCustomized() {
                 wordWrap: "break-word",
               }}
             >
-              <ThemeProvider theme={theme_tiltle}>
-                <Typography>
-                  Happy Happy Happy Motobike Rental
-                </Typography>
+              <ThemeProvider theme={themeTiltle}>
+                <Typography>Happy Happy Happy Motobike Rental</Typography>
               </ThemeProvider>
 
               <Box sx={{ lineHeight: 3 }}>
                 <ThemeProvider theme={theme}>
                   <Typography>
-                    <LocationOnIcon />アドレス: Dai Co Viet, Hai Ba Trung, Ha Noi
+                    <LocationOnIcon />
+                    アドレス: Dai Co Viet, Hai Ba Trung, Ha Noi
                   </Typography>
                 </ThemeProvider>
               </Box>
@@ -160,7 +164,8 @@ export default function UnstyledTabsCustomized() {
               <Box sx={{ lineHeight: 6 }}>
                 <ThemeProvider theme={theme}>
                   <Typography>
-                    <TtyIcon />電話番号: 0123456789
+                    <TtyIcon />
+                    電話番号: 0123456789
                   </Typography>
                 </ThemeProvider>
               </Box>
@@ -196,16 +201,15 @@ export default function UnstyledTabsCustomized() {
                 wordWrap: "break-word",
               }}
             >
-              <ThemeProvider theme={theme_tiltle}>
-                <Typography>
-                  Happy Happy Happy Motobike Rental
-                </Typography>
+              <ThemeProvider theme={themeTiltle}>
+                <Typography>Happy Happy Happy Motobike Rental</Typography>
               </ThemeProvider>
 
               <Box sx={{ lineHeight: 3 }}>
                 <ThemeProvider theme={theme}>
                   <Typography>
-                    <LocationOnIcon />アドレス: Dai Co Viet, Hai Ba Trung, Ha Noi
+                    <LocationOnIcon />
+                    アドレス: Dai Co Viet, Hai Ba Trung, Ha Noi
                   </Typography>
                 </ThemeProvider>
               </Box>
@@ -213,11 +217,11 @@ export default function UnstyledTabsCustomized() {
               <Box sx={{ lineHeight: 6 }}>
                 <ThemeProvider theme={theme}>
                   <Typography>
-                    <TtyIcon />電話番号: 0123456789
+                    <TtyIcon />
+                    電話番号: 0123456789
                   </Typography>
                 </ThemeProvider>
               </Box>
-
             </Box>
             <div>
               <ButtonBase sx={{ width: "600px" }}>
@@ -226,8 +230,7 @@ export default function UnstyledTabsCustomized() {
             </div>
           </Container>
         </StyledTabPanel>
-      </Tabs >
+      </Tabs>
     </>
   );
 }
-
