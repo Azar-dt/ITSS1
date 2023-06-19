@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { BikeType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
         rating: {
           gte: rate ? Number(rate) : 0,
         },
-        type: type ? { equals: type } : undefined,
+        type: type ? { equals: type as BikeType } : undefined,
       },
       orderBy: {
         rating: "desc",
