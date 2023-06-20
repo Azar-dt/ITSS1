@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const bikes = await prisma.bike.findMany({
       where: {
         price: {
-          lte: price ? Number(price) : 100000, 
+          lte: price ? Number(price) : 100000,
         },
         rating: {
           gte: rate ? Number(rate) : 0,
