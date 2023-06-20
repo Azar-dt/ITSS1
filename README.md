@@ -8,6 +8,10 @@ First, run:
 yarn install
 ```
 
+```bash
+npx husky install
+```
+
 Create a new **.env** file from **.env.example**
 
 Run the development server:
