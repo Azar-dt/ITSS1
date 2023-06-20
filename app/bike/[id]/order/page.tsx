@@ -85,7 +85,7 @@ export default function BikeOrder() {
 
               <FormControl fullWidth>
                 <DateTimePicker
-                  label="Controlled picker"
+                  label="予約開始時間"
                   value={form.startTime}
                   onChange={(newValue) => {
                     setForm({
@@ -98,7 +98,7 @@ export default function BikeOrder() {
 
               <FormControl>
                 <DateTimePicker
-                  label="Controlled picker"
+                  label="予約終了時間"
                   value={form.endTime}
                   onChange={(newValue) => {
                     setForm({
