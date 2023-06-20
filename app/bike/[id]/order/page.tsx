@@ -1,6 +1,8 @@
 "use client";
 
 import Header from "@/components/Header";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import fetcher from "@/libs/fetcher";
 import {
   Button,
   FormControl,
@@ -12,9 +14,14 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled } from "@mui/material/styles";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { Bike } from "@prisma/client";
+import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "react-hot-toast";
 import styled1 from "styled-components";
+import useSWR from "swr";
 
 type OrderForm = {
   name: string;
@@ -24,7 +31,14 @@ type OrderForm = {
   endTime: Dayjs;
 };
 
-export default function BikeOrder() {
+export default function BikeOrder({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const { data, isLoading } = useCurrentUser();
+  const { data: bikeData, isLoading: bikeLoading } = useSWR<Bike>(
+    `/api/bike/${params.id}`,
+    fetcher
+  );
+
   const [form, setForm] = React.useState<OrderForm>({
     name: "",
     email: "",
@@ -32,9 +46,24 @@ export default function BikeOrder() {
     startTime: dayjs(Date.now()),
     endTime: dayjs(Date.now()),
   });
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+  const handleOrder = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = await axios.post("/api/bike", {
+      ...form,
+      userId: data.id,
+      bikeId: params.id,
+    });
+    if (res?.status !== 200) {
+      toast.error(`失敗しました\n${res.statusText}`);
+      return;
+    }
+    toast.success("予約しました");
+    router.push("/");
   };
 
   return (
@@ -56,6 +85,7 @@ export default function BikeOrder() {
               }}
               noValidate
               autoComplete="off"
+              onSubmit={handleOrder}
             >
               <Typography variant="h3">バイク予約</Typography>
               <TextField
@@ -124,6 +154,7 @@ export default function BikeOrder() {
                     sx={{
                       padding: "10px 10px",
                     }}
+                    type="submit"
                   >
                     <Typography>予約</Typography>
                   </Button>
@@ -150,7 +181,6 @@ export default function BikeOrder() {
             >
               <ButtonBase
                 sx={{
-                  width: "600px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "start",
@@ -159,11 +189,11 @@ export default function BikeOrder() {
                 }}
               >
                 <Img
-                  // eslint-disable-next-line max-len
-                  src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+                  src={bikeData?.imgUrl}
                   sx={{
                     borderRadius: "8px 8px 0 0",
                   }}
+                  width={500}
                 />
                 <Box
                   sx={{
@@ -179,7 +209,7 @@ export default function BikeOrder() {
                       fontWeight: "bold",
                     }}
                   >
-                    バイク名前
+                    {bikeData?.name}
                   </Typography>
                   <Typography
                     variant="h6"
@@ -187,7 +217,7 @@ export default function BikeOrder() {
                       fontWeight: "bold",
                     }}
                   >
-                    価格:$XXXX
+                    価格:{bikeData?.price}VND
                   </Typography>
                 </Box>
               </ButtonBase>
