@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     // pagination
     const total = bikes.length;
     const data = bikes;
-    //data.sort((a, b) => b.rating - a.rating);
+    // data.sort((a, b) => b.rating - a.rating);
 
     return NextResponse.json({
       total,
