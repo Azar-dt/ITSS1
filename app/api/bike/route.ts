@@ -40,28 +40,25 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     // const { userId, bikeId, startTime, endTime } = req.body;
-    const { searchParams } = new URL(req.nextUrl);
-    const userId = searchParams.get("userId");
-    const bikeId = searchParams.get("bikeId");
-    const startTime = searchParams.get("startTime");
-    const endTime = searchParams.get("endTime");
+    // const { searchParams } = new URL(req.nextUrl);
+    const { userId, bikeId, email, phoneNumber, startTime, endTime } =
+      await req.json();
+    // const userId = searchParams.get("userId");
+    // const bikeId = searchParams.get("bikeId");
+    // const startTime = searchParams.get("startTime");
+    // const endTime = searchParams.get("endTime");
     // Create a new order using Prisma
     // Ensure that userId and bikeId are not null
-    if (
-      userId === null ||
-      bikeId === null ||
-      startTime === null ||
-      endTime === null
-    ) {
+    if (!userId || !bikeId || !startTime || !endTime) {
       throw new Error("Invalid user, bike, or time information");
     }
     const order = await prisma.order.create({
       data: {
-        user: { connect: { id: userId } },
-        bike: { connect: { id: Number(bikeId) } },
+        userId,
+        bikeId,
         startTime: new Date(startTime),
         endTime: new Date(endTime),
       },
