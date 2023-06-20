@@ -1,18 +1,33 @@
-## Getting Started
+## 1. Getting Started
 
-First, run the development server:
+node v18.13.0
+
+First, run:
 
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+Create a new **.env** file from **.env.example**
+
+Run the development server:
+
+```bash
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## WorkFlow
+## 2. VSCode Extension
+
+- **ESLint** \*
+- **Prettier** \*
+  - After install, go to vscode setting ( **CTRL + ,** ):
+    - Find formatter, set default formatter to prettier
+    - Turn on format on save
+- Code Spell Checker
+
+## 3. WorkFlow
 
 The most important rule of this workflow, is that the developer who is writing the code is responsible for making sure it goes through the entire process smoothly and in a timely manner.
 

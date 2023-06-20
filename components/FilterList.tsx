@@ -5,14 +5,34 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import toast from "react-hot-toast";
 
-export const FilterList = () => {
+type Props = {
+  setStoreAddress: (storeAddress: {
+    longitude?: number;
+    latitude?: number;
+  }) => void;
+  setRadius: (radius: number | null) => void;
+};
+export const FilterList: React.FC<Props> = ({ setStoreAddress, setRadius }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setStoreAddress({
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+        });
+      },
+      (error) => {
+        toast.error(error.message);
+      }
+    );
+    if (index === 2) setRadius(1);
     setSelectedIndex(index);
   };
 
@@ -43,14 +63,14 @@ export const FilterList = () => {
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
         <ListItemButton
-          selected={selectedIndex === 2}
-          onClick={(event) => handleListItemClick(event, 2)}
+          selected={selectedIndex === 1}
+          onClick={(event) => handleListItemClick(event, 1)}
         >
           <ListItemText primary="一番近い" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedIndex === 3}
-          onClick={(event) => handleListItemClick(event, 3)}
+          selected={selectedIndex === 2}
+          onClick={(event) => handleListItemClick(event, 2)}
         >
           <ListItemText primary="距離１Km以下" />
         </ListItemButton>
