@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         },
       },
       orderBy: {
-        rating: "desc",
+        createdAt: "desc",
       },
     });
 
@@ -65,7 +65,6 @@ export async function GET(req: NextRequest) {
     // pagination
     const total = stores.length;
     stores = stores.slice(cursor, cursor + take);
-    stores.sort((a, b) => b.rating - a.rating);
 
     return NextResponse.json({
       total,
