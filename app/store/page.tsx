@@ -2,19 +2,28 @@
 
 "use client";
 
+import { BikeList } from "@/components/BikeList";
 import Header from "@/components/Header";
 import { buttonClasses } from "@mui/base/Button";
 import Tab, { tabClasses } from "@mui/base/Tab";
 import TabPanel from "@mui/base/TabPanel";
 import Tabs from "@mui/base/Tabs";
 import TabsList from "@mui/base/TabsList";
-// import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TtyIcon from "@mui/icons-material/Tty";
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
+import { Bike } from "@prisma/client";
 import { useState } from "react";
 import styled1 from "styled-components";
 
@@ -122,7 +131,10 @@ const NOW = "2023-06-21T09:26:40.759Z";
 
 const DEFAULT_IMG =
   "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg";
-const DATA = {
+const DATA: {
+  total: number;
+  bikes: Bike[];
+} = {
   total: 10,
   bikes: [
     {
@@ -334,7 +346,7 @@ export default function StorePage() {
           </Container>
         </StyledTabPanel>
         <StyledTabPanel value={2}>
-          {/* <Grid container spacing={3}>
+          <Grid container spacing={3}>
             <Grid item xs={3}>
               <Container
                 style={{
@@ -385,15 +397,14 @@ export default function StorePage() {
               <BikeList
                 data={{
                   ...DATA,
-                  bikes: (DATA.bikes as Bike[]).slice(cursor, cursor + take),
+                  bikes: DATA.bikes.slice(cursor, cursor + take),
                 }}
                 cursor={cursor}
                 setCursor={setCursor}
                 take={take}
               />
             </Grid>
-          </Grid> */}
-          abc
+          </Grid>
         </StyledTabPanel>
       </Tabs>
     </>
