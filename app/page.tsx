@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import ProductLayout from "@/components/ProductLayout";
 import SearchBar from "@/components/SearchBar";
 import fetcher from "@/libs/fetcher";
-import { Skeleton } from "@mui/material";
 import { Store } from "@prisma/client";
 import { useState } from "react";
 import styled from "styled-components";
@@ -20,7 +19,7 @@ export default function Home() {
   const [storeName, setStoreName] = useState("");
   const [storeAddress, setStoreAddress] = useState<StoreAddress>({});
   const [cursor, setCursor] = useState(0);
-  const take = 2;
+  const take = 6;
   const [rate, setRate] = useState(0);
   const [radius, setRadius] = useState<number | null>(null);
   const { data, isLoading } = useSWR<{
@@ -43,20 +42,19 @@ export default function Home() {
           setStoreName={setStoreName}
           setStoreAddress={setStoreAddress}
         />
-        {!isLoading && data ? (
-          <ProductLayoutSection>
-            <ProductLayout
-              data={data}
-              cursor={cursor}
-              setCursor={setCursor}
-              take={take}
-              setStoreAddress={setStoreAddress}
-              setRadius={setRadius}
-            />
-          </ProductLayoutSection>
-        ) : (
-          <Skeleton variant="rectangular" width="100%" height="100vh" />
-        )}
+        <ProductLayoutSection>
+          <ProductLayout
+            isLoading={isLoading}
+            data={data}
+            cursor={cursor}
+            setCursor={setCursor}
+            take={take}
+            setStoreAddress={setStoreAddress}
+            setRadius={setRadius}
+            rate={rate}
+            setRate={setRate}
+          />
+        </ProductLayoutSection>
       </Container>
       <Footer />
     </>

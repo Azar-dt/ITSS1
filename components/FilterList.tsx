@@ -15,12 +15,18 @@ type Props = {
   setRadius: (radius: number | null) => void;
 };
 export const FilterList: React.FC<Props> = ({ setStoreAddress, setRadius }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
   ) => {
+    if (index === selectedIndex) {
+      setSelectedIndex(0);
+      setRadius(null);
+      setStoreAddress({});
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setStoreAddress({
@@ -32,6 +38,7 @@ export const FilterList: React.FC<Props> = ({ setStoreAddress, setRadius }) => {
         toast.error(error.message);
       }
     );
+    if (index === 1) setRadius(null);
     if (index === 2) setRadius(1);
     setSelectedIndex(index);
   };
