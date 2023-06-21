@@ -2,18 +2,29 @@
 
 "use client";
 
+import { BikeList } from "@/components/BikeList";
 import Header from "@/components/Header";
 import { buttonClasses } from "@mui/base/Button";
 import Tab, { tabClasses } from "@mui/base/Tab";
 import TabPanel from "@mui/base/TabPanel";
 import Tabs from "@mui/base/Tabs";
 import TabsList from "@mui/base/TabsList";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TtyIcon from "@mui/icons-material/Tty";
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
+import { Bike } from "@prisma/client";
+import { useState } from "react";
 import styled1 from "styled-components";
 
 const blue = {
@@ -116,11 +127,115 @@ const Container = styled1.div`
   gridGap: 30px 60px;
 `;
 
-export default function UnstyledTabsCustomized() {
+const NOW = "2023-06-21T09:26:40.759Z";
+
+const DATA: {
+  total: number;
+  bikes: Bike[];
+} = {
+  total: 10,
+  bikes: [
+    {
+      id: 1,
+      storeId: 1,
+      name: "Bike 1",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 2,
+      storeId: 1,
+      name: "Bike 2",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 3,
+      storeId: 1,
+      name: "Bike 3",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 4,
+      storeId: 1,
+      name: "Bike 4",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 5,
+      storeId: 1,
+      name: "Bike 5",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 6,
+      storeId: 1,
+      name: "Bike 6",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 7,
+      storeId: 1,
+      name: "Bike 7",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 8,
+      storeId: 1,
+      name: "Bike 8",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 9,
+      storeId: 1,
+      name: "Bike 9",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+    {
+      id: 10,
+      storeId: 1,
+      name: "Bike 10",
+      price: 1,
+      type: "CC150",
+      createdAt: new Date(NOW),
+      updatedAt: new Date(NOW),
+    },
+  ],
+};
+
+export default function StorePage() {
+  const [cursor, setCursor] = useState(0);
+  const take = 6;
+
   return (
     <>
       <Header />
-      <Tabs defaultValue={1}>
+      <Tabs defaultValue={2}>
         <StyledTabsList sx={{ marginTop: "20px" }}>
           <StyledTab value={1}>
             <Typography variant="subtitle1">ストア情報</Typography>
@@ -209,7 +324,65 @@ export default function UnstyledTabsCustomized() {
           </Container>
         </StyledTabPanel>
         <StyledTabPanel value={2}>
-          <Container />
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <Container
+                style={{
+                  display: "flex",
+                  margin: "16px 20px",
+                  justifyContent: "center",
+                }}
+              >
+                <span>
+                  <FilterAltIcon style={{ color: "#aaa" }} />
+                </span>
+                <Box
+                  sx={{
+                    maxWidth: 200,
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    height: "max-content",
+                    flexGrow: 1,
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    component="div"
+                    sx={{
+                      flexGrow: 1,
+                      padding: "10px",
+                      display: "flex",
+                      justifyContent: "start",
+                    }}
+                  >
+                    フィルター
+                  </Typography>
+                  <Divider />
+                  <List component="nav" aria-label="secondary mailbox folder">
+                    <ListItemButton>
+                      <ListItemText primary="バイクの種類別" />
+                    </ListItemButton>
+                    <Divider />
+                    <ListItemButton>
+                      <ListItemText primary="値段" />
+                    </ListItemButton>
+                  </List>
+                </Box>
+              </Container>
+            </Grid>
+            <Grid item xs={9} sx={{ background: "#cdcdcd", marginTop: 1 }}>
+              <BikeList
+                data={{
+                  ...DATA,
+                  bikes: DATA.bikes.slice(cursor, cursor + take),
+                }}
+                cursor={cursor}
+                setCursor={setCursor}
+                take={take}
+              />
+            </Grid>
+          </Grid>
         </StyledTabPanel>
       </Tabs>
     </>

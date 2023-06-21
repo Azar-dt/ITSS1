@@ -1,0 +1,49 @@
+import { Container, Grid, Pagination } from "@mui/material";
+import { Bike } from "@prisma/client";
+import React from "react";
+import { BikeCard } from "./BikeCard";
+
+type Props = {
+  data: {
+    total: number;
+    bikes: Bike[];
+  };
+  cursor: number;
+  setCursor: (cursor: number) => void;
+  take: number;
+};
+
+const BikeList: React.FC<Props> = ({ data, cursor, setCursor, take }) => {
+  const handlePagination = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCursor((value - 1) * take);
+  };
+
+  return (
+    <Container>
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+        sx={{
+          padding: "20px 0",
+        }}
+      >
+        {data.bikes.map((bike) => (
+          <Grid item key={bike.id} xs={2} sm={4} md={4}>
+            <BikeCard bike={bike} key={bike.id} />
+          </Grid>
+        ))}
+      </Grid>
+      <Pagination
+        count={(data.total - 1) / take + 1}
+        onChange={handlePagination}
+        page={cursor / take + 1}
+      />
+    </Container>
+  );
+};
+
+export { BikeList };
