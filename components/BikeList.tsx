@@ -1,19 +1,26 @@
-import { Grid, Pagination } from "@mui/material";
+import { Grid, Pagination, Skeleton } from "@mui/material";
 import { Bike } from "@prisma/client";
 import React from "react";
 import { BikeCard } from "./BikeCard";
 
 type Props = {
-  data: {
+  data?: {
     total: number;
     bikes: Bike[];
   };
+  isLoading: boolean;
   cursor: number;
   setCursor: (cursor: number) => void;
   take: number;
 };
 
-const BikeList: React.FC<Props> = ({ data, cursor, setCursor, take }) => {
+const BikeList: React.FC<Props> = ({
+  data,
+  isLoading,
+  cursor,
+  setCursor,
+  take,
+}) => {
   const handlePagination = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -31,14 +38,18 @@ const BikeList: React.FC<Props> = ({ data, cursor, setCursor, take }) => {
           padding: "20px 0",
         }}
       >
-        {data.bikes.map((bike) => (
-          <Grid item key={bike.id} xs={2} sm={4} md={4}>
-            <BikeCard bike={bike} key={bike.id} />
-          </Grid>
-        ))}
+        {!isLoading && data ? (
+          data.bikes.map((bike) => (
+            <Grid item key={bike.id} xs={2} sm={4} md={4}>
+              <BikeCard bike={bike} key={bike.id} />
+            </Grid>
+          ))
+        ) : (
+          <Skeleton variant="rectangular" height={300} />
+        )}
       </Grid>
       <Pagination
-        count={Math.floor((data.total - 1) / take) + 1}
+        count={Math.floor((Number(data?.total) - 1) / take) + 1}
         onChange={handlePagination}
         page={Math.floor(cursor / take) + 1}
       />

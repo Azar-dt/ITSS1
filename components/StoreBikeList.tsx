@@ -5,155 +5,71 @@ import {
   Container,
   Divider,
   Grid,
+  InputAdornment,
   List,
   ListItemButton,
   ListItemText,
+  TextField,
   Typography,
 } from "@mui/material";
 
+import { Bike, BikeType } from "@prisma/client";
 import * as React from "react";
 import { BikeList } from "./BikeList";
 
+export const BIKE_TYPES = [
+  {
+    name: BikeType.OFF_ROAD,
+  },
+  {
+    name: BikeType.CC150,
+  },
+  {
+    name: BikeType.BIG_DISPLACEMENT,
+  },
+  {
+    name: BikeType.CC50,
+  },
+  {
+    name: BikeType.CC125,
+  },
+  {
+    name: BikeType.MANUAL,
+  },
+  {
+    name: BikeType.SCOOTER,
+  },
+];
+
 type Props = {
-  storeId: string;
-};
-
-const NOW = "2023-06-21T09:26:40.759Z";
-
-const DEFAULT_IMG =
-  // eslint-disable-next-line max-len
-  "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg";
-
-const DATA: {
-  total: number;
-  bikes: Bike[];
-} = {
-  total: 10,
-  bikes: [
-    {
-      id: 1,
-      storeId: 1,
-      name: "Bike 1",
-      price: 1,
-      type: "CC150",
-      rating: 5,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 2,
-      storeId: 1,
-      name: "Bike 2",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 3,
-      storeId: 1,
-      name: "Bike 3",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 4,
-      storeId: 1,
-      name: "Bike 4",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 5,
-      storeId: 1,
-      name: "Bike 5",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 6,
-      storeId: 1,
-      name: "Bike 6",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 7,
-      storeId: 1,
-      name: "Bike 7",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 8,
-      storeId: 1,
-      name: "Bike 8",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 9,
-      storeId: 1,
-      name: "Bike 9",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-    {
-      id: 10,
-      storeId: 1,
-      name: "Bike 10",
-      price: 1,
-      type: "CC150",
-      rating: 4,
-      createdAt: new Date(NOW),
-      updatedAt: new Date(NOW),
-      imgUrl: DEFAULT_IMG,
-    },
-  ],
-};
-
-const StoreBikeList: React.FC<Props> = ({ storeId }) => {
-  const [cursor, setCursor] = React.useState(0);
-  const take = 6;
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const handleListItemClick = (
+  data: {
+    total: number;
+    bikes: Bike[];
+  };
+  isLoading: boolean;
+  cursor: number;
+  setCursor: (cursor: number) => void;
+  take: number;
+  handleListItemClick: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
-  ) => {
-    console.log(index);
-  };
+  ) => void;
+  selectedIndex: number;
+  price: number | undefined;
+  setPrice: (price: number | undefined) => void;
+};
 
+const StoreBikeList: React.FC<Props> = ({
+  data,
+  isLoading,
+  cursor,
+  setCursor,
+  take,
+  handleListItemClick,
+  selectedIndex,
+  price,
+  setPrice,
+}) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={3}>
@@ -194,58 +110,47 @@ const StoreBikeList: React.FC<Props> = ({ storeId }) => {
               <ListItemButton>
                 <ListItemText primary="バイクの種類別" />
               </ListItemButton>
-              <Collapse in={open} timeout="auto" unmountOnExit>
+              <Collapse in timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 1}
-                    onClick={(event) => handleListItemClick(event, 1)}
-                  >
-                    <ListItemText primary="Off road" />
-                  </ListItemButton>
-
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 2)}
-                  >
-                    <ListItemText primary="CC150" />
-                  </ListItemButton>
-
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 3)}
-                  >
-                    <ListItemText primary="Big displacement" />
-                  </ListItemButton>
-
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 4)}
-                  >
-                    <ListItemText primary="CC50" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 5)}
-                  >
-                    <ListItemText primary="CC125" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 6)}
-                  >
-                    <ListItemText primary="Manual" />
-                  </ListItemButton>
+                  {BIKE_TYPES.map((type, index) => (
+                    <ListItemButton
+                      key={type.name}
+                      sx={{ pl: 4 }}
+                      selected={selectedIndex === index}
+                      onClick={(event) => handleListItemClick(event, index)}
+                    >
+                      <ListItemText primary={type.name} />
+                    </ListItemButton>
+                  ))}
                 </List>
               </Collapse>
               <Divider />
-              <ListItemButton>
-                <ListItemText primary="値段" />
+              <ListItemButton
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "10px",
+                }}
+              >
+                <ListItemText
+                  primary="値段"
+                  sx={{
+                    width: "max-content",
+                  }}
+                />
+                <TextField
+                  variant="standard"
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">{"≤"}</InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">VND</InputAdornment>
+                    ),
+                  }}
+                />
               </ListItemButton>
             </List>
           </Box>
@@ -253,10 +158,8 @@ const StoreBikeList: React.FC<Props> = ({ storeId }) => {
       </Grid>
       <Grid item xs={9} sx={{ background: "#cdcdcd", marginTop: 1 }}>
         <BikeList
-          data={{
-            ...DATA,
-            bikes: DATA.bikes.slice(cursor, cursor + take),
-          }}
+          data={data}
+          isLoading={isLoading}
           cursor={cursor}
           setCursor={setCursor}
           take={take}

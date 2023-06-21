@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { Bike } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import styled from "styled-components";
 
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const BikeCard: React.FC<Props> = ({ bike }) => {
+  const router = useRouter();
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseOver = () => {
@@ -66,7 +68,7 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
             {bike.name}
           </Typography>
           <Typography variant="body2" color={red[400]}>
-            ${bike.price}
+            {bike.price}VND
           </Typography>
         </CardContent>
         {isHovered && (
@@ -80,7 +82,11 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
               },
             }}
           >
-            <Button variant="contained" style={{ backgroundColor: "#777" }}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#777" }}
+              onClick={() => router.push(`/bike/${bike.id}/order`)}
+            >
               借りる
             </Button>
           </CardActions>

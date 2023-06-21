@@ -8,7 +8,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 
-import { StoreBikeList } from "@/components/StoreBikeList";
+import StoreBikeList, { BIKE_TYPES } from "@/components/StoreBikeList";
 import fetcher from "@/libs/fetcher";
 import { Store } from "@prisma/client";
 import * as React from "react";
@@ -20,46 +20,37 @@ interface TabPanelProps {
   value: number;
 }
 
-const NOW = "2023-06-21T09:26:40.759Z";
-
-const DEFAULT_IMG =
-  // eslint-disable-next-line max-len
-  "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg";
-
 export default function StorePage({ params }: { params: { id: string } }) {
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <Box
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </Box>
-    );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   const { data, isLoading } = useSWR<Store>(`/api/store/${params.id}`, fetcher);
+
+  const [cursor, setCursor] = React.useState(0);
+  const take = 6;
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [bikeType, setBikeType] = React.useState<string | undefined>(undefined);
+  const [price, setPrice] = React.useState<number | undefined>(undefined);
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    if (index === selectedIndex) {
+      setBikeType(undefined);
+    }
+    setSelectedIndex(index);
+    setBikeType(BIKE_TYPES[index].name);
+  };
+
+  const { data: bikeData, isLoading: bikeLoading } = useSWR(
+    // eslint-disable-next-line max-len
+    `/api/bike?storeId=${params.id}&cursor=${cursor}&take=${take}&type=${
+      bikeType ?? ""
+    }&price=${price ?? ""}`,
+    fetcher
+  );
 
   return (
     <>
@@ -78,8 +69,20 @@ export default function StorePage({ params }: { params: { id: string } }) {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="ストア情報" {...a11yProps(0)} />
-            <Tab label="バイクリスト" {...a11yProps(1)} />
+            <Tab
+              label="ストア情報"
+              {...a11yProps(0)}
+              sx={{
+                fontSize: "1.5rem",
+              }}
+            />
+            <Tab
+              label="バイクリスト"
+              {...a11yProps(1)}
+              sx={{
+                fontSize: "1.5rem",
+              }}
+            />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -148,17 +151,49 @@ export default function StorePage({ params }: { params: { id: string } }) {
                     borderRadius: "8px",
                   }}
                   alt="The bike"
-                  // eslint-disable-next-line max-len
-                  src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e"
+                  src={data?.imgUrl}
                 />
               </Grid>
             </Grid>
           </Container>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <StoreBikeList storeId={params.id} />
+          <StoreBikeList
+            data={bikeData}
+            isLoading={bikeLoading}
+            cursor={cursor}
+            setCursor={setCursor}
+            take={take}
+            selectedIndex={selectedIndex}
+            handleListItemClick={handleListItemClick}
+            price={price}
+            setPrice={setPrice}
+          />
         </TabPanel>
       </Box>
     </>
   );
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Box
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </Box>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }
