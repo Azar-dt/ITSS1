@@ -34,6 +34,7 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
           borderRadius: "5px",
           padding: "30px 0",
           backgroundColor: "#dddddd",
+          transition: "all 1s ease",
         }}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
