@@ -1,5 +1,5 @@
+import { Rating, Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
@@ -11,7 +11,8 @@ import { FilterList } from "./FilterList";
 import { StoreCard } from "./StoreCard";
 
 type Props = {
-  data: {
+  isLoading: boolean;
+  data?: {
     total: number;
     stores: Store[];
   };
@@ -23,15 +24,20 @@ type Props = {
     latitude?: number;
   }) => void;
   setRadius: (radius: number | null) => void;
+  rate: number;
+  setRate: (rate: number) => void;
 };
 
 const ProductLayout: React.FC<Props> = ({
+  isLoading,
   data,
   cursor,
   setCursor,
   take,
   setStoreAddress,
   setRadius,
+  rate,
+  setRate,
 }) => {
   const handlePagination = (
     event: React.ChangeEvent<unknown>,
@@ -72,12 +78,17 @@ const ProductLayout: React.FC<Props> = ({
             並べ替え
           </Typography>
           <Stack direction="row" spacing={2}>
-            <Button variant="contained" color="inherit">
-              関連
-            </Button>
-            <Button variant="contained" color="inherit">
-              値段
-            </Button>
+            <Rating
+              name="read-only"
+              value={rate}
+              onChange={(event, newValue) => {
+                setRate(newValue as number);
+              }}
+              precision={0.5}
+            />
+            <Typography variant="subtitle1" component="span" fontWeight={700}>
+              以上
+            </Typography>
           </Stack>
         </Box>
         <Grid
@@ -88,16 +99,28 @@ const ProductLayout: React.FC<Props> = ({
             padding: "20px 0",
           }}
         >
-          {data.stores.map((store) => {
-            return (
-              <Grid item key={store.id} xs={2} sm={4} md={4}>
-                <StoreCard store={store} key={store.id} />
-              </Grid>
-            );
-          })}
+          {!isLoading && data ? (
+            data.stores.map((store) => {
+              return (
+                <Grid item key={store.id} xs={2} sm={4} md={4}>
+                  <StoreCard store={store} key={store.id} />
+                </Grid>
+              );
+            })
+          ) : (
+            <Skeleton
+              variant="rounded"
+              width={"90%"}
+              height={"70vh"}
+              sx={{
+                margin: "auto",
+                marginTop: "20px",
+              }}
+            />
+          )}
         </Grid>
         <Pagination
-          count={(data.total - 1) / take + 1}
+          count={Math.floor((Number(data?.total) - 1) / take) + 1}
           onChange={handlePagination}
           page={cursor / take + 1}
         />
