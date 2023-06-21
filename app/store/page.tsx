@@ -2,28 +2,19 @@
 
 "use client";
 
-import { BikeList } from "@/components/BikeList";
 import Header from "@/components/Header";
 import { buttonClasses } from "@mui/base/Button";
 import Tab, { tabClasses } from "@mui/base/Tab";
 import TabPanel from "@mui/base/TabPanel";
 import Tabs from "@mui/base/Tabs";
 import TabsList from "@mui/base/TabsList";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+// import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TtyIcon from "@mui/icons-material/Tty";
-import {
-  Box,
-  Divider,
-  Grid,
-  List,
-  ListItemButton,
-  ListItemText,
-} from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
-import { Bike } from "@prisma/client";
 import { useState } from "react";
 import styled1 from "styled-components";
 
@@ -129,10 +120,9 @@ const Container = styled1.div`
 
 const NOW = "2023-06-21T09:26:40.759Z";
 
-const DATA: {
-  total: number;
-  bikes: Bike[];
-} = {
+const DEFAULT_IMG =
+  "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg";
+const DATA = {
   total: 10,
   bikes: [
     {
@@ -141,8 +131,10 @@ const DATA: {
       name: "Bike 1",
       price: 1,
       type: "CC150",
+      rating: 5,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 2,
@@ -150,8 +142,10 @@ const DATA: {
       name: "Bike 2",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 3,
@@ -159,8 +153,10 @@ const DATA: {
       name: "Bike 3",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 4,
@@ -168,8 +164,10 @@ const DATA: {
       name: "Bike 4",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 5,
@@ -177,8 +175,10 @@ const DATA: {
       name: "Bike 5",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 6,
@@ -186,8 +186,10 @@ const DATA: {
       name: "Bike 6",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 7,
@@ -195,8 +197,10 @@ const DATA: {
       name: "Bike 7",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 8,
@@ -204,8 +208,10 @@ const DATA: {
       name: "Bike 8",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 9,
@@ -213,8 +219,10 @@ const DATA: {
       name: "Bike 9",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
     {
       id: 10,
@@ -222,8 +230,10 @@ const DATA: {
       name: "Bike 10",
       price: 1,
       type: "CC150",
+      rating: 4,
       createdAt: new Date(NOW),
       updatedAt: new Date(NOW),
+      imgUrl: DEFAULT_IMG,
     },
   ],
 };
@@ -235,7 +245,7 @@ export default function StorePage() {
   return (
     <>
       <Header />
-      <Tabs defaultValue={2}>
+      <Tabs defaultValue={1}>
         <StyledTabsList sx={{ marginTop: "20px" }}>
           <StyledTab value={1}>
             <Typography variant="subtitle1">ストア情報</Typography>
@@ -324,7 +334,7 @@ export default function StorePage() {
           </Container>
         </StyledTabPanel>
         <StyledTabPanel value={2}>
-          <Grid container spacing={3}>
+          {/* <Grid container spacing={3}>
             <Grid item xs={3}>
               <Container
                 style={{
@@ -375,14 +385,15 @@ export default function StorePage() {
               <BikeList
                 data={{
                   ...DATA,
-                  bikes: DATA.bikes.slice(cursor, cursor + take),
+                  bikes: (DATA.bikes as Bike[]).slice(cursor, cursor + take),
                 }}
                 cursor={cursor}
                 setCursor={setCursor}
                 take={take}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
+          abc
         </StyledTabPanel>
       </Tabs>
     </>

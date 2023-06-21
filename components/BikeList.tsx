@@ -1,4 +1,4 @@
-import { Container, Grid, Pagination } from "@mui/material";
+import { Grid, Pagination } from "@mui/material";
 import { Bike } from "@prisma/client";
 import React from "react";
 import { BikeCard } from "./BikeCard";
@@ -22,7 +22,7 @@ const BikeList: React.FC<Props> = ({ data, cursor, setCursor, take }) => {
   };
 
   return (
-    <Container>
+    <div>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
@@ -38,11 +38,11 @@ const BikeList: React.FC<Props> = ({ data, cursor, setCursor, take }) => {
         ))}
       </Grid>
       <Pagination
-        count={(data.total - 1) / take + 1}
+        count={Math.floor((data.total - 1) / take) + 1}
         onChange={handlePagination}
-        page={cursor / take + 1}
+        page={Math.floor(cursor / take) + 1}
       />
-    </Container>
+    </div>
   );
 };
 

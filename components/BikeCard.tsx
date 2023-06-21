@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
@@ -14,9 +13,7 @@ import React from "react";
 import styled from "styled-components";
 
 type Props = {
-  bike: Bike & {
-    imgUrl?: string;
-  };
+  bike: Bike;
 };
 
 const BikeCard: React.FC<Props> = ({ bike }) => {
@@ -38,53 +35,55 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
           padding: "30px 0",
           backgroundColor: "#dddddd",
         }}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
       >
-        <CardActionArea
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
+        <CardMedia
+          component="img"
+          alt="green iguana"
+          height="120"
+          image={
+            bike.imgUrl ??
+            // eslint-disable-next-line max-len
+            "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg"
+          }
+        />
+        <CardContent
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
         >
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            height="120"
-            image={
-              bike.imgUrl ??
-              // eslint-disable-next-line max-len
-              "https://i.pinimg.com/originals/ab/f6/93/abf6931a2219d89bce1a5ee9fb1d6daa.jpg"
-            }
+          <Rating
+            name="read-only"
+            value={bike.rating}
+            readOnly
+            precision={0.5}
           />
-          <CardContent
+          <Typography gutterBottom variant="h5" component="div">
+            {bike.name}
+          </Typography>
+          <Typography variant="body2" color={red[400]}>
+            ${bike.price}
+          </Typography>
+        </CardContent>
+        {isHovered && (
+          <CardActions
             sx={{
-              display: "flex",
               alignItems: "center",
-              flexDirection: "column",
+              display: "flex",
+              justifyContent: "center",
+              a: {
+                textDecoration: "none",
+              },
             }}
           >
-            <Rating name="read-only" value={3} readOnly precision={0.5} />
-            <Typography gutterBottom variant="h5" component="div">
-              {bike.name}
-            </Typography>
-            <Typography variant="body2" color={red[400]}>
-              ${bike.price}
-            </Typography>
-          </CardContent>
-          {isHovered && (
-            <CardActions
-              sx={{
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-                a: {
-                  textDecoration: "none",
-                },
-              }}
-            >
-              <Button variant="contained" style={{ backgroundColor: "#777" }}>
-                借りる
-              </Button>
-            </CardActions>
-          )}
-        </CardActionArea>
+            <Button variant="contained" style={{ backgroundColor: "#777" }}>
+              借りる
+            </Button>
+          </CardActions>
+        )}
       </Card>
     </ProductItem>
   );
