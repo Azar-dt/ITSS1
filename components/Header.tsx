@@ -62,6 +62,7 @@ export default function Header() {
                 cursor: "pointer",
               },
             }}
+            onClick={() => router.push("/")}
           >
             🌸
           </Typography>
