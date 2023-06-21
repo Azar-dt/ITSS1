@@ -11,9 +11,6 @@ export async function GET(
       where: {
         id: Number(id),
       },
-      include: {
-        bikes: true,
-      },
     });
     return NextResponse.json(store);
   } catch (error) {

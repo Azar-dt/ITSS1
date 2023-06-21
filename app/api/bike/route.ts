@@ -1,25 +1,30 @@
 import prisma from "@/prisma/client";
-import { BikeType } from "@prisma/client";
+import { Bike, BikeType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
     // get query params
     const { searchParams } = new URL(req.nextUrl);
+    const cursor = Number(searchParams.get("cursor"));
+    const take = Number(searchParams.get("take"));
+    const storeId = searchParams.get("storeId");
     const price = searchParams.get("price");
     const type = searchParams.get("type");
     const rate = searchParams.get("rate");
+    let bikes: Bike[] = [];
 
     // get all stores from db using prisma
-    const bikes = await prisma.bike.findMany({
+    bikes = await prisma.bike.findMany({
       where: {
         price: {
-          lte: price ? Number(price) : 100000,
+          lte: price ? Number(price) : undefined,
         },
         rating: {
           gte: rate ? Number(rate) : 0,
         },
         type: type ? { equals: type as BikeType } : undefined,
+        storeId: storeId ? { equals: Number(storeId) } : undefined,
       },
       orderBy: {
         rating: "desc",
@@ -28,12 +33,11 @@ export async function GET(req: NextRequest) {
 
     // pagination
     const total = bikes.length;
-    const data = bikes;
-    // data.sort((a, b) => b.rating - a.rating);
+    bikes = bikes.slice(cursor, cursor + take);
 
     return NextResponse.json({
       total,
-      bikes: data,
+      bikes,
     });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
