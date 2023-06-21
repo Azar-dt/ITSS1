@@ -1,3 +1,4 @@
+import { CustomLocalizationProvider } from "@/providers/localizationProvider";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 import { NextAuthProvider } from "../providers/sessionProvider";
@@ -17,13 +18,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NextAuthProvider>
-          <Toaster
-            position="bottom-right"
-            toastOptions={{
-              duration: 3000,
-            }}
-          />
-          {children}
+          <CustomLocalizationProvider>
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                duration: 3000,
+              }}
+            />
+            {children}
+          </CustomLocalizationProvider>
         </NextAuthProvider>
       </body>
     </html>

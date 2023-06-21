@@ -35,7 +35,7 @@ const Login = () => {
     if (data) {
       router.push("/");
     }
-  }, [data]);
+  }, [data, router]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
