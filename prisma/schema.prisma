@@ -86,6 +86,9 @@ model Order {
   userId    String
   bike      Bike     @relation(fields: [bikeId], references: [id], onDelete: Cascade)
   bikeId    Int
+  email      String?
+  phoneNumber String
+  name      String
   startTime DateTime
   endTime   DateTime
   status    Status  @default(REQUESTED)

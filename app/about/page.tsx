@@ -7,7 +7,7 @@ import useSWR from "swr";
 const About = () => {
   const { data, isLoading } = useSWR<{
     stores: Store[];
-  }>("/api/stores", fetcher);
+  }>("/api/store?cursor=0&take=2", fetcher);
   return (
     <div>
       <h1>About</h1>
