@@ -40,7 +40,17 @@ const BikeList: React.FC<Props> = ({
       >
         {!isLoading && data ? (
           data.bikes.map((bike) => (
-            <Grid item key={bike.id} xs={2} sm={4} md={4}>
+            <Grid
+              item
+              key={bike.id}
+              xs={2}
+              sm={4}
+              md={4}
+              sx={{
+                backgroundColor: "#CDCDCD",
+                height: "380px",
+              }}
+            >
               <BikeCard bike={bike} key={bike.id} />
             </Grid>
           ))

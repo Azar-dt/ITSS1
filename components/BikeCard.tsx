@@ -37,6 +37,9 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
           padding: "30px 0",
           backgroundColor: "#dddddd",
           transition: "all 1s ease",
+          hover: {
+            backgroundColor: "red",
+          },
         }}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
