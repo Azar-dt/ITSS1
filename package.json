@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "clean": "rm -rf node_modules && yarn install",
     "db:migrate": "prisma migrate dev",
     "lint": "next lint",
     "lint-staged": "lint-staged"
