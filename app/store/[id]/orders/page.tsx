@@ -43,7 +43,7 @@ const columns: readonly Column[] = [
   { id: "phoneNumber", label: "電話番号", minWidth: 100 },
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
-  { id: "status", label: "拒否/承認", minWidth: 200 },
+  { id: "status", label: "拒否 / 承認", minWidth: 200 },
 ];
 
 const imgURL =
