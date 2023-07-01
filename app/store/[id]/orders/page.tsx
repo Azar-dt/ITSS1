@@ -19,10 +19,12 @@ import dayjs, { Dayjs } from "dayjs";
 import * as React from "react";
 
 type OrderInfo = {
-  name: string;
+  id: number;
+  userName: string;
   bikeName: string;
-  email?: string;
+  bikeImg: string;
   phoneNumber: string;
+  price: number;
   startTime: Dayjs;
   endTime: Dayjs;
   statusOrder: string;
@@ -41,9 +43,15 @@ const columns: readonly Column[] = [
   { id: "userName", label: "名前", minWidth: 100 },
   { id: "bikeName", label: "バイク名", minWidth: 100 },
   { id: "phoneNumber", label: "電話番号", minWidth: 100 },
+  {
+    id: "price",
+    label: "価格",
+    minWidth: 100,
+    format: (value: number) => `${value.toLocaleString("en-EN")}₫`,
+  },
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
-  { id: "status", label: "拒否 / 承認", minWidth: 200 },
+  { id: "statusOrder", label: "拒否 / 承認", minWidth: 200 },
 ];
 
 const imgURL =
@@ -57,9 +65,10 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Ducati",
     phoneNumber: "0112100000",
-    startTime: "11-06-2023",
-    endTime: "30-07-2023",
-    status: "Approved",
+    price: 100000,
+    startTime: dayjs(Date.now()),
+    endTime: dayjs(Date.now()),
+    statusOrder: "Approved",
   },
   {
     id: 2,
@@ -67,9 +76,10 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Yamaha",
     phoneNumber: "0112100000",
-    startTime: "23-04-2023",
-    endTime: "30-05-2023",
-    status: "Cancelled",
+    price: 1000000,
+    startTime: dayjs(Date.now()),
+    endTime: dayjs(Date.now()),
+    statusOrder: "Cancelled",
   },
   {
     id: 3,
@@ -77,9 +87,10 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Honda",
     phoneNumber: "0112100000",
-    startTime: "22-06-2023",
-    endTime: "25-07-2024",
-    status: "Pending",
+    price: 2300000,
+    startTime: dayjs(Date.now()),
+    endTime: dayjs(Date.now()),
+    statusOrder: "Pending",
   },
   {
     id: 4,
@@ -87,9 +98,10 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Honda",
     phoneNumber: "0112101100",
-    startTime: "23-06-2022",
-    endTime: "30-06-2022",
-    status: "Pending",
+    price: 230000,
+    startTime: dayjs(Date.now()),
+    endTime: dayjs(Date.now()),
+    statusOrder: "Pending",
   },
   {
     id: 5,
@@ -97,9 +109,10 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Honda",
     phoneNumber: "0112101100",
-    startTime: "23-06-2023",
-    endTime: "30-06-2023",
-    status: "Pending",
+    price: 230000,
+    startTime: dayjs(Date.now()),
+    endTime: dayjs(Date.now()),
+    statusOrder: "Pending",
   },
   {
     id: 6,
@@ -107,6 +120,7 @@ const rows = [
     bikeImg: imgURL,
     bikeName: "Honda",
     phoneNumber: "0112101100",
+    price: 300000,
     startTime: "23-06-2023",
     endTime: "30-06-2023",
     statusOrder: "Pending",
@@ -118,10 +132,12 @@ export default function Orders() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [form, setForm] = React.useState<OrderInfo>({
+    id: -1,
     bikeName: "",
-    name: "",
-    email: "",
+    bikeImg: imgURL,
+    userName: "",
     phoneNumber: "",
+    price: 0,
     startTime: dayjs(Date.now()),
     endTime: dayjs(Date.now()),
     statusOrder: "requested",
@@ -144,10 +160,23 @@ export default function Orders() {
     // const res = await axios.post("/api/store/...", { form });
   };
 
-  const handleReject = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleReject = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    rowId: number
+  ) => {
     e.preventDefault();
-    setForm({ ...form, statusOrder: "rejected" });
 
+    const updatedTableData = rows.find((row) => row.id === rowId);
+    if (updatedTableData) {
+      setForm({
+        ...updatedTableData,
+        startTime: dayjs(updatedTableData.startTime),
+        endTime: dayjs(updatedTableData.endTime),
+        statusOrder: "rejected",
+      });
+    }
+
+    console.log(form);
     // const res = await axios.post("/api/store/", { ...form });
   };
 
@@ -190,6 +219,13 @@ export default function Orders() {
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
+                    const formattedPrice =
+                      columns
+                        .find((col) => col.id === "price")
+                        ?.format?.(row.price) || row.price;
+                    const startTime = String(
+                      dayjs(row.startTime).format("HH:mm - DD-MM-YYYY")
+                    );
                     return (
                       <TableRow hover tabIndex={-1} key={row.id}>
                         <TableCell align="center">
@@ -206,12 +242,17 @@ export default function Orders() {
                         <TableCell align="center">{row.userName}</TableCell>
                         <TableCell align="center">{row.bikeName}</TableCell>
                         <TableCell align="center">{row.phoneNumber}</TableCell>
-                        <TableCell align="center">{row.startTime}</TableCell>
-                        <TableCell align="center">{row.endTime}</TableCell>
+                        <TableCell align="center">{formattedPrice}</TableCell>
+                        <TableCell align="center">{startTime}</TableCell>
+                        <TableCell align="center">
+                          {String(
+                            dayjs(row.endTime).format("HH:mm - DD-MM-YYYY")
+                          )}
+                        </TableCell>
                         <TableCell align="center">
                           <Button
                             variant="outlined"
-                            onClick={handleReject}
+                            onClick={(e) => handleReject(e, row.id)}
                             sx={{
                               marginRight: "20px",
                             }}
