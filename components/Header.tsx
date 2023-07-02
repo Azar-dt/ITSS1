@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { Role } from "@prisma/client";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
@@ -22,23 +23,55 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const menu = [
-    {
-      title: "プロフィール",
-      onclick: () => {
-        handleClose();
-        router.push("/profile");
-      },
-    },
-    {
-      title: "ログアウト",
-      onclick: async () => {
-        await signOut();
-        handleClose();
-        router.push("/");
-      },
-    },
-  ];
+
+  const menu = React.useMemo(() => {
+    if (data?.role === Role.CUSTOMER)
+      return [
+        {
+          title: "予約管理",
+          onclick: () => {
+            handleClose();
+            router.push("/orders");
+          },
+        },
+        {
+          title: "ログアウト",
+          onclick: async () => {
+            await signOut();
+            handleClose();
+            router.push("/");
+          },
+        },
+      ];
+
+    if (data?.role === Role.STORE_MANAGER) {
+      return [
+        {
+          title: "Store",
+          onclick: () => {
+            handleClose();
+            router.push("/store");
+          },
+        },
+        {
+          title: "Orders",
+          onclick: () => {
+            handleClose();
+            router.push("/store/orders");
+          },
+        },
+        {
+          title: "Logout",
+          onclick: async () => {
+            await signOut();
+            handleClose();
+            router.push("/");
+          },
+        },
+      ];
+    }
+    return [];
+  }, [data?.role, router]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -72,6 +105,9 @@ export default function Header() {
             sx={{
               flexGrow: 1,
               userSelect: "none",
+              ":hover": {
+                cursor: "pointer",
+              },
             }}
             fontWeight={700}
             fontSize={32}
