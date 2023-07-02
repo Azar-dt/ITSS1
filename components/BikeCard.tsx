@@ -71,7 +71,7 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
             {bike.name}
           </Typography>
           <Typography variant="body2" color={red[400]}>
-            {bike.price}VND
+            {bike.price.toLocaleString("en-EN")} ₫
           </Typography>
         </CardContent>
         {isHovered && (
