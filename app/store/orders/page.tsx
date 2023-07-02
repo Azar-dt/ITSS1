@@ -39,19 +39,19 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: "bikeImg", label: "バイク写真", minWidth: 100 },
-  { id: "userName", label: "名前", minWidth: 100 },
-  { id: "bikeName", label: "バイク名", minWidth: 100 },
-  { id: "phoneNumber", label: "電話番号", minWidth: 100 },
+  { id: "bikeImg", label: "Bike Image", minWidth: 100 },
+  { id: "userName", label: "Name", minWidth: 100 },
+  { id: "bikeName", label: "Bike name", minWidth: 100 },
+  { id: "phoneNumber", label: "Phone number", minWidth: 100 },
   {
     id: "price",
-    label: "価格",
+    label: "Price",
     minWidth: 100,
     format: (value: number) => `${value.toLocaleString("en-EN")}₫`,
   },
-  { id: "startTime", label: "開始時間", minWidth: 100 },
-  { id: "endTime", label: "終了時間", minWidth: 100 },
-  { id: "statusOrder", label: "拒否 / 承認", minWidth: 200 },
+  { id: "startTime", label: "Start time", minWidth: 100 },
+  { id: "endTime", label: "End time", minWidth: 100 },
+  { id: "statusOrder", label: "Action", minWidth: 250 },
 ];
 
 const imgURL =
@@ -187,7 +187,7 @@ export default function Orders() {
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <Typography variant="h4" component="span" fontWeight={600} my={5}>
-          予約リスト
+          Orders Management
         </Typography>
       </Box>
       <Container
@@ -250,18 +250,24 @@ export default function Orders() {
                           )}
                         </TableCell>
                         <TableCell align="center">
-                          <Button
-                            variant="outlined"
-                            onClick={(e) => handleReject(e, row.id)}
+                          <Box
                             sx={{
-                              marginRight: "20px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              gap: "10px",
                             }}
                           >
-                            拒否
-                          </Button>
-                          <Button variant="contained" onClick={handleAccept}>
-                            承認
-                          </Button>
+                            <Button
+                              variant="outlined"
+                              onClick={(e) => handleReject(e, row.id)}
+                            >
+                              Decline
+                            </Button>
+                            <Button variant="contained" onClick={handleAccept}>
+                              Accept
+                            </Button>
+                          </Box>
                         </TableCell>
                       </TableRow>
                     );
