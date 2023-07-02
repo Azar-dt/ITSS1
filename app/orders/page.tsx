@@ -32,7 +32,7 @@ const columns: readonly Column[] = [
     id: "price",
     label: "価格",
     minWidth: 100,
-    format: (value: number) => `${value.toLocaleString()} VND`,
+    format: (value: number) => `${value.toLocaleString("en-EN")} VND`,
   },
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
@@ -160,6 +160,7 @@ export default function Orders() {
                       columns
                         .find((col) => col.id === "price")
                         ?.format?.(row.price) || row.price;
+
                     return (
                       <TableRow hover tabIndex={-1} key={row.id}>
                         <TableCell align="center">{row.userName}</TableCell>
