@@ -47,6 +47,13 @@ export default function BikeOrder({ params }: { params: { id: string } }) {
     endTime: dayjs(Date.now()),
   });
 
+  const price = React.useMemo(() => {
+    if (!bikeData?.price) return 0;
+    // price by day
+    const diff = form.endTime.diff(form.startTime, "day");
+    return bikeData.price * (diff + 1);
+  }, [bikeData?.price, form.endTime, form.startTime]);
+
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -217,7 +224,7 @@ export default function BikeOrder({ params }: { params: { id: string } }) {
                       fontWeight: "bold",
                     }}
                   >
-                    価格:{bikeData?.price}VND
+                    価格:{`${price.toLocaleString("en-EN")}₫`}
                   </Typography>
                 </Box>
               </ButtonBase>

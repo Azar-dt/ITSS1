@@ -89,6 +89,7 @@ model Order {
   email      String?
   phoneNumber String
   name      String
+  price     Int
   startTime DateTime
   endTime   DateTime
   status    Status  @default(REQUESTED)
