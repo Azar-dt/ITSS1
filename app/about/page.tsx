@@ -5,7 +5,7 @@ import { Store } from "@prisma/client";
 import useSWR from "swr";
 
 const About = () => {
-  const { data, isLoading } = useSWR<{
+  const { data } = useSWR<{
     stores: Store[];
   }>("/api/store?cursor=0&take=2", fetcher);
   return (
