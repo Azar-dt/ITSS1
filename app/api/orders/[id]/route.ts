@@ -15,6 +15,9 @@ export async function GET(
           not: Status.CANCELLED,
         },
       },
+      include: {
+        bike: true,
+      },
     });
 
     return NextResponse.json(orders);

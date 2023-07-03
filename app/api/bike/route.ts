@@ -46,10 +46,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   try {
-    // const { userId, bikeId, startTime, endTime } = req.body;
-    // const { searchParams } = new URL(req.nextUrl);
-    const { userId, bikeId, email, phoneNumber, startTime, endTime, name } =
-      await req.json();
+    const {
+      userId,
+      bikeId,
+      email,
+      phoneNumber,
+      startTime,
+      endTime,
+      name,
+      price,
+    } = await req.json();
 
     if (!userId || !bikeId || !startTime || !endTime) {
       throw new Error("Invalid user, bike, or time information");
@@ -61,6 +67,7 @@ export async function POST(req: Request) {
         startTime: new Date(startTime),
         endTime: new Date(endTime),
         email,
+        price: Number(price),
         phoneNumber,
         name,
       },
