@@ -27,3 +27,22 @@ export async function GET(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(req: Request) {
+  try {
+    const { orderId, status } = await req.json();
+
+    if (!orderId || !status) {
+      throw new Error("Invalid status or orderId information");
+    }
+
+    const order = await prisma.order.update({
+      where: { id: orderId },
+      data: { status },
+    });
+
+    return NextResponse.json({ order });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

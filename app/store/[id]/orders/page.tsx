@@ -62,25 +62,9 @@ export default function Orders({ params }: { params: { id: string } }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const [form, setForm] = React.useState<OrderInfo>({
-    id: -1,
-    email: "ttrang@trang",
-    name: "",
-    phoneNumber: "",
-    userId: 1,
-    bikeId: 1,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
+  const [form, setForm] = React.useState({
+    orderId: 0,
     status: "requested",
-    bike: {
-      id: 1,
-      imgUrl: "",
-      name: "",
-      price: 1,
-      rating: 4,
-      storeId: 1,
-      type: "MANUAL",
-    },
   });
 
   const { data: orderData, isLoading: orderLoading } = useSWR(
@@ -98,9 +82,16 @@ export default function Orders({ params }: { params: { id: string } }) {
     setPage(0);
   };
 
-  const handleAccept = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAccept = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    rowId: number
+  ) => {
     e.preventDefault();
-    setForm({ ...form, status: "ACCEPTED" });
+
+    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
+    if (updatedTableData) {
+      setForm({ orderId: rowId, status: "ACCEPTED" });
+    }
 
     // const res = await axios.post("/api/store/...", { form });
   };
@@ -114,12 +105,11 @@ export default function Orders({ params }: { params: { id: string } }) {
     const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
     if (updatedTableData) {
       setForm({
-        ...updatedTableData,
-        startTime: dayjs(updatedTableData.startTime),
-        endTime: dayjs(updatedTableData.endTime),
+        orderId: rowId,
         status: "REJECTED",
       });
     }
+    console.log(form);
 
     // console.log(form);
     // const res = await axios.post("/api/store/", { ...form });
@@ -215,7 +205,10 @@ export default function Orders({ params }: { params: { id: string } }) {
                             >
                               Decline
                             </Button>
-                            <Button variant="contained" onClick={handleAccept}>
+                            <Button
+                              variant="contained"
+                              onClick={(e) => handleAccept(e, row.id)}
+                            >
                               Accept
                             </Button>
                           </Box>
