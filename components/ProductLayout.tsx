@@ -120,7 +120,7 @@ const ProductLayout: React.FC<Props> = ({
           )}
         </Grid>
         <Pagination
-          count={Math.floor((Number(data?.total) - 1) / take) + 1}
+          count={Math.floor((Number(data?.total ?? 1) - 1) / take) + 1}
           onChange={handlePagination}
           page={cursor / take + 1}
         />
