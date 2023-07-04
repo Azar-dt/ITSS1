@@ -33,13 +33,21 @@ type OrderInfo = {
   status: string;
   bike: Bike;
 };
-
 interface Column {
   id: string;
   label: string;
   minWidth?: number;
   align?: "center";
   format?: (value: number) => string;
+}
+
+// eslint-disable-next-line no-shadow
+enum Status {
+  REQUESTED = "REQUESTED",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
 }
 
 const columns: readonly Column[] = [
@@ -64,7 +72,7 @@ export default function Orders({ params }: { params: { id: string } }) {
 
   const [form, setForm] = React.useState({
     orderId: 0,
-    status: "requested",
+    status: Status.REQUESTED,
   });
 
   const { data: orderData, isLoading: orderLoading } = useSWR(
@@ -90,7 +98,7 @@ export default function Orders({ params }: { params: { id: string } }) {
 
     const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
     if (updatedTableData) {
-      setForm({ orderId: rowId, status: "ACCEPTED" });
+      setForm({ orderId: rowId, status: Status.ACCEPTED });
     }
 
     // const res = await axios.post("/api/store/...", { form });
@@ -106,12 +114,10 @@ export default function Orders({ params }: { params: { id: string } }) {
     if (updatedTableData) {
       setForm({
         orderId: rowId,
-        status: "REJECTED",
+        status: Status.REJECTED,
       });
     }
     console.log(form);
-
-    // console.log(form);
     // const res = await axios.post("/api/store/", { ...form });
   };
 
@@ -154,14 +160,6 @@ export default function Orders({ params }: { params: { id: string } }) {
                 {orderData
                   ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ?.map((row: OrderInfo) => {
-                    // const formattedPrice =
-                    //   columns
-                    //     .find((col) => col.id === "price")
-                    //     ?.format?.(
-                    //       row.price !== undefined
-                    //         ? Number(row.price).toLocaleString()
-                    //         : 100
-                    //     ) || row.price;
                     const startTime = String(
                       dayjs(row.startTime).format("HH:mm - DD-MM-YYYY")
                     );
