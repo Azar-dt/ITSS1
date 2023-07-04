@@ -19,11 +19,65 @@ import { Store } from "@prisma/client";
 import * as React from "react";
 import useSWR from "swr";
 
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const imgURL =
+  // eslint-disable-next-line max-len, sonarjs/no-duplicate-string
+  "https://images.unsplash.com/photo-1508357941501-0924cf312bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW90b2Jpa2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80";
+
+const rows = [
+  {
+    id: 1,
+    userName: "John",
+    bikeImg: imgURL,
+    bikeName: "Ducati",
+    price: 100000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 2,
+    userName: "Anna",
+    bikeImg: imgURL,
+    bikeName: "Yamaha",
+    price: 123000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 3,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 4,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 5,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+];
 
 export default function StorePage({ params }: { params: { id: string } }) {
   const [value, setValue] = React.useState(0);
@@ -140,73 +194,85 @@ export default function StorePage({ params }: { params: { id: string } }) {
                   />
                   電話番号: {data?.phoneNumber}
                 </Typography>
-                <div>
-                  <Button
-                    sx={{ marginTop: "30px" }}
-                    variant="contained"
-                    href="#contained-buttons"
-                    onClick={handleOpen}
-                  >
-                    評価を見る
-                  </Button>
-                  <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={style}>
-                      <DialogTitle id="id">
-                        <Box>
-                          <Grid container spacing={0.5}>
-                            <Grid item xs={11}>
-                              <Box
-                                sx={{
-                                  alignItems: "center",
-                                  // display: "flex",
-                                  textAlign: "center",
-                                }}
-                              >
-                                <Typography
-                                  variant="h4"
-                                  component="span"
-                                  fontWeight={600}
-                                  my={5}
-                                  // textAlign="center"
-                                >
-                                  評価
-                                </Typography>
-                                <Grid container spacing={0.5}>
-                                  <Grid item xs={2}>
-                                    <Box
-                                      component="img"
-                                      sx={{
-                                        width: "80%",
-                                        borderRadius: "8px",
-                                      }}
-                                      alt="The bike"
-                                      src={data?.imgUrl}
-                                    />
-                                  </Grid>
-                                  <Grid item xs={10} sx={{ textAlign: "left" }}>
-                                    <Typography>Lenna1</Typography>
-                                    <Typography>Lenna1</Typography>
-                                    <Typography>Lenna1</Typography>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={1}>
-                              <IconButton onClick={handleClose}>
-                                <CloseIcon />
-                              </IconButton>
-                            </Grid>
-                          </Grid>
+
+                <Button
+                  sx={{ marginTop: "30px" }}
+                  variant="contained"
+                  href="#contained-buttons"
+                  onClick={handleOpen}
+                >
+                  評価を見る
+                </Button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <DialogTitle id="comment">
+                      <Container
+                        sx={{
+                          display: "block",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography
+                            variant="h3"
+                            component="span"
+                            fontWeight={700}
+                            my={5}
+                          >
+                            評価を見る
+                          </Typography>
+                          <IconButton onClick={handleClose}>
+                            <CloseIcon />
+                          </IconButton>
                         </Box>
-                      </DialogTitle>
-                    </Box>
-                  </Modal>
-                </div>
+
+                        <Paper sx={{ overflow: "auto" }}>
+                          <TableContainer sx={{ maxHeight: 550 }}>
+                            <Table stickyHeader aria-label="table comment">
+                              <TableBody>
+                                {rows.slice().map((row) => {
+                                  return (
+                                    <TableRow hover tabIndex={-1} key={row.id}>
+                                      {/* <TableCell align="center"> */}
+                                      <TableCell>
+                                        <Box
+                                          component="img"
+                                          sx={{
+                                            width: "150px",
+                                            borderRadius: "8px",
+                                          }}
+                                          alt="The bike"
+                                          src={row.bikeImg}
+                                        />
+                                      </TableCell>
+                                      <TableCell align="left">
+                                        <Typography>{row.bikeName}</Typography>
+                                        <Typography>{row.comment}</Typography>
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
+                        </Paper>
+                      </Container>
+                    </DialogTitle>
+                  </Box>
+                </Modal>
               </Grid>
 
               <Grid
