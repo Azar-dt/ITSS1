@@ -2,6 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import fetcher from "@/libs/fetcher";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -14,20 +15,23 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { Bike, Order } from "@prisma/client";
 // import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import * as React from "react";
+import useSWR from "swr";
 
 type OrderInfo = {
   id: number;
-  userName: string;
-  bikeName: string;
-  bikeImg: string;
+  name: string;
+  email: string;
+  userId: number;
+  bikeId: number;
   phoneNumber: string;
-  price: number;
   startTime: Dayjs;
   endTime: Dayjs;
-  statusOrder: string;
+  status: string;
+  bike: Bike;
 };
 
 interface Column {
@@ -54,94 +58,108 @@ const columns: readonly Column[] = [
   { id: "statusOrder", label: "Action", minWidth: 250 },
 ];
 
-const imgURL =
-  // eslint-disable-next-line max-len, sonarjs/no-duplicate-string
-  "https://images.unsplash.com/photo-1508357941501-0924cf312bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW90b2Jpa2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80";
+// const imgURL =
+// eslint-disable-next-line max-len, sonarjs/no-duplicate-string
+//   "https://images.unsplash.com/photo-1508357941501-0924cf312bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW90b2Jpa2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80";
 
-const rows = [
-  {
-    id: 1,
-    userName: "John",
-    bikeImg: imgURL,
-    bikeName: "Ducati",
-    phoneNumber: "0112100000",
-    price: 100000,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
-    statusOrder: "Approved",
-  },
-  {
-    id: 2,
-    userName: "Anna",
-    bikeImg: imgURL,
-    bikeName: "Yamaha",
-    phoneNumber: "0112100000",
-    price: 1000000,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
-    statusOrder: "Cancelled",
-  },
-  {
-    id: 3,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    phoneNumber: "0112100000",
-    price: 2300000,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
-    statusOrder: "Pending",
-  },
-  {
-    id: 4,
-    userName: "Lenna1",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    phoneNumber: "0112101100",
-    price: 230000,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
-    statusOrder: "Pending",
-  },
-  {
-    id: 5,
-    userName: "Lenna2",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    phoneNumber: "0112101100",
-    price: 230000,
-    startTime: dayjs(Date.now()),
-    endTime: dayjs(Date.now()),
-    statusOrder: "Pending",
-  },
-  {
-    id: 6,
-    userName: "Lenna3",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    phoneNumber: "0112101100",
-    price: 300000,
-    startTime: "23-06-2023",
-    endTime: "30-06-2023",
-    statusOrder: "Pending",
-  },
-];
+// const rows = [
+//   {
+//     id: 1,
+//     userName: "John",
+//     bikeImg: imgURL,
+//     bikeName: "Ducati",
+//     phoneNumber: "0112100000",
+//     price: 100000,
+//     startTime: dayjs(Date.now()),
+//     endTime: dayjs(Date.now()),
+//     statusOrder: "Approved",
+//   },
+//   {
+//     id: 2,
+//     userName: "Anna",
+//     bikeImg: imgURL,
+//     bikeName: "Yamaha",
+//     phoneNumber: "0112100000",
+//     price: 1000000,
+//     startTime: dayjs(Date.now()),
+//     endTime: dayjs(Date.now()),
+//     statusOrder: "Cancelled",
+//   },
+//   {
+//     id: 3,
+//     userName: "Lena",
+//     bikeImg: imgURL,
+//     bikeName: "Honda",
+//     phoneNumber: "0112100000",
+//     price: 2300000,
+//     startTime: dayjs(Date.now()),
+//     endTime: dayjs(Date.now()),
+//     statusOrder: "Pending",
+//   },
+//   {
+//     id: 4,
+//     userName: "Lena1",
+//     bikeImg: imgURL,
+//     bikeName: "Honda",
+//     phoneNumber: "0112101100",
+//     price: 230000,
+//     startTime: dayjs(Date.now()),
+//     endTime: dayjs(Date.now()),
+//     statusOrder: "Pending",
+//   },
+//   {
+//     id: 5,
+//     userName: "Lena2",
+//     bikeImg: imgURL,
+//     bikeName: "Honda",
+//     phoneNumber: "0112101100",
+//     price: 230000,
+//     startTime: dayjs(Date.now()),
+//     endTime: dayjs(Date.now()),
+//     statusOrder: "Pending",
+//   },
+//   {
+//     id: 6,
+//     userName: "Lena3",
+//     bikeImg: imgURL,
+//     bikeName: "Honda",
+//     phoneNumber: "0112101100",
+//     price: 300000,
+//     startTime: "23-06-2023",
+//     endTime: "30-06-2023",
+//     statusOrder: "Pending",
+//   },
+// ];
 
-export default function Orders() {
+export default function Orders({ params }: { params: { id: string } }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [form, setForm] = React.useState<OrderInfo>({
     id: -1,
-    bikeName: "",
-    bikeImg: imgURL,
-    userName: "",
+    email: "ttrang@trang",
+    name: "",
     phoneNumber: "",
-    price: 0,
+    userId: 1,
+    bikeId: 1,
     startTime: dayjs(Date.now()),
     endTime: dayjs(Date.now()),
-    statusOrder: "requested",
+    status: "requested",
+    bike: {
+      id: 1,
+      imgUrl: "",
+      name: "",
+      price: 1,
+      rating: 4,
+      storeId: 1,
+      type: "MANUAL",
+    },
   });
+
+  const { data: orderData, isLoading: orderLoading } = useSWR(
+    `/api/store/${params.id}/orders`,
+    fetcher
+  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -155,7 +173,7 @@ export default function Orders() {
 
   const handleAccept = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setForm({ ...form, statusOrder: "accepted" });
+    setForm({ ...form, status: "ACCEPTED" });
 
     // const res = await axios.post("/api/store/...", { form });
   };
@@ -166,17 +184,17 @@ export default function Orders() {
   ) => {
     e.preventDefault();
 
-    const updatedTableData = rows.find((row) => row.id === rowId);
+    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
     if (updatedTableData) {
       setForm({
         ...updatedTableData,
         startTime: dayjs(updatedTableData.startTime),
         endTime: dayjs(updatedTableData.endTime),
-        statusOrder: "rejected",
+        status: "REJECTED",
       });
     }
 
-    console.log(form);
+    // console.log(form);
     // const res = await axios.post("/api/store/", { ...form });
   };
 
@@ -216,13 +234,17 @@ export default function Orders() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                    const formattedPrice =
-                      columns
-                        .find((col) => col.id === "price")
-                        ?.format?.(row.price) || row.price;
+                {orderData
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((row: OrderInfo) => {
+                    // const formattedPrice =
+                    //   columns
+                    //     .find((col) => col.id === "price")
+                    //     ?.format?.(
+                    //       row.price !== undefined
+                    //         ? Number(row.price).toLocaleString()
+                    //         : 100
+                    //     ) || row.price;
                     const startTime = String(
                       dayjs(row.startTime).format("HH:mm - DD-MM-YYYY")
                     );
@@ -236,13 +258,15 @@ export default function Orders() {
                               borderRadius: "8px",
                             }}
                             alt="The bike"
-                            src={row.bikeImg}
+                            src={row.bike.imgUrl}
                           />
                         </TableCell>
-                        <TableCell align="center">{row.userName}</TableCell>
-                        <TableCell align="center">{row.bikeName}</TableCell>
+                        <TableCell align="center">{row.name}</TableCell>
+                        <TableCell align="center">{row.bike.name}</TableCell>
                         <TableCell align="center">{row.phoneNumber}</TableCell>
-                        <TableCell align="center">{formattedPrice}</TableCell>
+                        <TableCell align="center">
+                          {row.bike.price.toLocaleString("en-EN")}₫
+                        </TableCell>
                         <TableCell align="center">{startTime}</TableCell>
                         <TableCell align="center">
                           {String(
@@ -278,7 +302,7 @@ export default function Orders() {
           <TablePagination
             rowsPerPageOptions={[5, 10]}
             component="div"
-            count={rows.length}
+            count={Number.isInteger(orderData?.length) ? orderData?.length : 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
