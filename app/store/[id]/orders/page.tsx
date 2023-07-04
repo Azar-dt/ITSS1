@@ -117,7 +117,6 @@ export default function Orders({ params }: { params: { id: string } }) {
         status: Status.REJECTED,
       });
     }
-    console.log(form);
     // const res = await axios.post("/api/store/", { ...form });
   };
 
