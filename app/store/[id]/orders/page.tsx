@@ -15,7 +15,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { green } from "@mui/material/colors";
 import { Bike, Order, Status } from "@prisma/client";
 import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
@@ -237,8 +236,19 @@ export default function Orders({ params }: { params: { id: string } }) {
                                   Complete
                                 </Button>
                               ) : (
-                                <Box>
-                                  <Typography borderColor={green}>
+                                <Box
+                                  component={"div"}
+                                  sx={{
+                                    borderRadius: "4px",
+                                    border: "1px solid green",
+                                  }}
+                                >
+                                  <Typography
+                                    color={"green"}
+                                    sx={{
+                                      padding: "5px 10px",
+                                    }}
+                                  >
                                     Completed
                                   </Typography>
                                 </Box>

@@ -64,6 +64,7 @@ export default function BikeOrder({ params }: { params: { id: string } }) {
       ...form,
       userId: data.id,
       bikeId: params.id,
+      price,
     });
     if (res?.status !== 200) {
       toast.error(`失敗しました\n${res.statusText}`);
