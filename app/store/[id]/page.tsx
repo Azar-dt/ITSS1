@@ -1,18 +1,27 @@
+/* eslint-disable max-len */
+
 "use client";
 
 import Header from "@/components/Header";
+import CloseIcon from "@mui/icons-material/Close";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TtyIcon from "@mui/icons-material/Tty";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Button, Container, DialogTitle, Grid } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 
 import StoreBikeList, { BIKE_TYPES } from "@/components/StoreBikeList";
 import fetcher from "@/libs/fetcher";
+import Modal from "@mui/material/Modal";
 import { Store } from "@prisma/client";
 import * as React from "react";
 import useSWR from "swr";
+
+import Paper from "@mui/material/Paper";
+import Rating from "@mui/material/Rating";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -20,12 +29,87 @@ interface TabPanelProps {
   value: number;
 }
 
+const imgURL =
+  // eslint-disable-next-line max-len, sonarjs/no-duplicate-string
+  "https://images.unsplash.com/photo-1508357941501-0924cf312bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW90b2Jpa2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80";
+
+const rows = [
+  {
+    id: 1,
+    userName: "John",
+    bikeImg: imgURL,
+    bikeName: "Ducati",
+    price: 100000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 2,
+    userName: "Anna",
+    bikeImg: imgURL,
+    bikeName: "Yamaha",
+    price: 123000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 3,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 4,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 5,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 6,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 7,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 8,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+];
+
 export default function StorePage({ params }: { params: { id: string } }) {
   const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, isLoading } = useSWR<Store>(`/api/store/${params.id}`, fetcher);
 
   const [cursor, setCursor] = React.useState(0);
@@ -41,6 +125,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
       setBikeType(undefined);
     }
     setSelectedIndex(index);
+    // eslint-disable-next-line security/detect-object-injection
     setBikeType(BIKE_TYPES[index].name);
   };
 
@@ -130,6 +215,97 @@ export default function StorePage({ params }: { params: { id: string } }) {
                   />
                   電話番号: {data?.phoneNumber}
                 </Typography>
+
+                <Button
+                  sx={{ marginTop: "30px", maxWidth: "25%" }}
+                  variant="contained"
+                  href="#contained-buttons"
+                  onClick={handleOpen}
+                >
+                  評価を見る
+                </Button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <DialogTitle id="comment">
+                      <Container
+                        sx={{
+                          display: "block",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginBottom: "30px",
+                        }}
+                      >
+                        <IconButton
+                          onClick={handleClose}
+                          sx={{
+                            position: "fixed",
+                            right: "30px",
+                          }}
+                        >
+                          <CloseIcon fontSize="large" />
+                        </IconButton>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography
+                            variant="h3"
+                            component="span"
+                            fontWeight={700}
+                            my={5}
+                          >
+                            評価を見る
+                          </Typography>
+                        </Box>
+
+                        <Paper sx={{ overflow: "auto", maxHeight: "400px" }}>
+                          <Stack spacing={4}>
+                            {rows.slice().map((row) => {
+                              return (
+                                <Box
+                                  sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                  }}
+                                >
+                                  <Box
+                                    component="img"
+                                    sx={{
+                                      width: "150px",
+                                      borderRadius: "8px",
+                                      marginRight: "10px",
+                                    }}
+                                    alt="The bike"
+                                    src={row.bikeImg}
+                                  />
+                                  <Box>
+                                    <Typography sx={{ marginBottom: "10px" }}>
+                                      {row.bikeName}
+                                    </Typography>
+                                    <Rating
+                                      name="simple-controlled"
+                                      value={5}
+                                      readOnly
+                                    />
+                                    <Typography>{row.comment}</Typography>
+                                  </Box>
+                                </Box>
+                              );
+                            })}
+                          </Stack>
+                        </Paper>
+                      </Container>
+                    </DialogTitle>
+                  </Box>
+                </Modal>
               </Grid>
 
               <Grid
@@ -197,3 +373,14 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  maxHeight: "700px",
+};
