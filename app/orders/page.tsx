@@ -31,12 +31,8 @@ interface Column {
 const columns: readonly Column[] = [
   { id: "userName", label: "名前", minWidth: 100 },
   { id: "bikeImg", label: "バイク写真", minWidth: 100 },
-  {
-    id: "price",
-    label: "価格",
-    minWidth: 100,
-    // format: (value: number) => `${value.toLocaleString()} VND`,
-  },
+  { id: "bikeName", label: "バイク名", minWidth: 100 },
+  { id: "price", label: "価格", minWidth: 100 },
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
   { id: "status", label: "状況", minWidth: 100 },
@@ -50,6 +46,8 @@ const imgURL =
 export default function Orders() {
   const { data: currentUser } = useCurrentUser();
   const { data } = useSWR<Order[]>(`/api/orders/${currentUser?.id}`, fetcher);
+  // eslint-disable-next-line no-console
+  console.log(data);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -64,10 +62,6 @@ export default function Orders() {
     setPage(0);
   };
 
-  function handleClick() {
-    // eslint-disable-next-line no-console
-    console.log("Button clicked for row ");
-  }
   return (
     <>
       <Header />
@@ -124,14 +118,15 @@ export default function Orders() {
                               src={imgURL}
                             />
                           </TableCell>
+                          <TableCell align="center">{row?.bike.name}</TableCell>
                           <TableCell align="center">
                             {row.price.toLocaleString("vi-VN")}
                           </TableCell>
                           <TableCell align="center">
-                            {row.startTime.toString()}
+                            {formatDate(row.startTime.toString())}
                           </TableCell>
                           <TableCell align="center">
-                            {row.endTime.toString()}
+                            {formatDate(row.endTime.toString())}
                           </TableCell>
                           <TableCell align="center">
                             <Typography
@@ -173,4 +168,19 @@ export default function Orders() {
       </Container>
     </>
   );
+}
+
+function handleClick() {
+  // eslint-disable-next-line no-console
+  console.log("Clicked");
+}
+
+function formatDate(inputDate: string) {
+  const dateObj = new Date(inputDate);
+  const year = dateObj.getFullYear();
+  const month = `0${dateObj.getMonth() + 1}`.slice(-2);
+  const day = `0${dateObj.getDate()}`.slice(-2);
+  const hours = `0${dateObj.getHours()}`.slice(-2);
+  const minutes = `0${dateObj.getMinutes()}`.slice(-2);
+  return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
