@@ -31,7 +31,6 @@ interface Column {
 const columns: readonly Column[] = [
   { id: "userName", label: "名前", minWidth: 100 },
   { id: "bikeImg", label: "バイク写真", minWidth: 100 },
-  { id: "bikeName", label: "バイク名", minWidth: 100 },
   {
     id: "price",
     label: "価格",
@@ -41,7 +40,7 @@ const columns: readonly Column[] = [
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
   { id: "status", label: "状況", minWidth: 100 },
-  { id: "delete", label: "削除", minWidth: 100 },
+  { id: "delete", label: "削除", minWidth: 300 },
 ];
 
 const imgURL =
@@ -81,6 +80,7 @@ export default function Orders() {
       </Box>
       <Container
         sx={{
+          maxWidth: "auto",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -124,8 +124,9 @@ export default function Orders() {
                               src={imgURL}
                             />
                           </TableCell>
-                          <TableCell align="center">{"Fix BikeName"}</TableCell>
-                          <TableCell align="center">{"Fix price"}</TableCell>
+                          <TableCell align="center">
+                            {row.price.toLocaleString("vi-VN")}
+                          </TableCell>
                           <TableCell align="center">
                             {row.startTime.toString()}
                           </TableCell>
