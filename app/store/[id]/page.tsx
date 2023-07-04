@@ -8,6 +8,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import TtyIcon from "@mui/icons-material/Tty";
 import { Box, Button, Container, DialogTitle, Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
@@ -20,11 +21,7 @@ import * as React from "react";
 import useSWR from "swr";
 
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
+import Rating from "@mui/material/Rating";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,6 +68,30 @@ const rows = [
   },
   {
     id: 5,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 6,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 7,
+    userName: "Lenna",
+    bikeImg: imgURL,
+    bikeName: "Honda",
+    price: 233000,
+    comment: "はやい、はやい",
+  },
+  {
+    id: 8,
     userName: "Lenna",
     bikeImg: imgURL,
     bikeName: "Honda",
@@ -196,7 +217,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                 </Typography>
 
                 <Button
-                  sx={{ marginTop: "30px" }}
+                  sx={{ marginTop: "30px", maxWidth: "25%" }}
                   variant="contained"
                   href="#contained-buttons"
                   onClick={handleOpen}
@@ -216,9 +237,18 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           display: "block",
                           justifyContent: "center",
                           alignItems: "center",
-                          marginBottom: "10px",
+                          marginBottom: "30px",
                         }}
                       >
+                        <IconButton
+                          onClick={handleClose}
+                          sx={{
+                            position: "fixed",
+                            right: "30px",
+                          }}
+                        >
+                          <CloseIcon fontSize="large" />
+                        </IconButton>
                         <Box
                           sx={{
                             display: "flex",
@@ -234,40 +264,43 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           >
                             評価を見る
                           </Typography>
-                          <IconButton onClick={handleClose}>
-                            <CloseIcon />
-                          </IconButton>
                         </Box>
 
-                        <Paper sx={{ overflow: "auto" }}>
-                          <TableContainer sx={{ maxHeight: 550 }}>
-                            <Table stickyHeader aria-label="table comment">
-                              <TableBody>
-                                {rows.slice().map((row) => {
-                                  return (
-                                    <TableRow hover tabIndex={-1} key={row.id}>
-                                      {/* <TableCell align="center"> */}
-                                      <TableCell>
-                                        <Box
-                                          component="img"
-                                          sx={{
-                                            width: "150px",
-                                            borderRadius: "8px",
-                                          }}
-                                          alt="The bike"
-                                          src={row.bikeImg}
-                                        />
-                                      </TableCell>
-                                      <TableCell align="left">
-                                        <Typography>{row.bikeName}</Typography>
-                                        <Typography>{row.comment}</Typography>
-                                      </TableCell>
-                                    </TableRow>
-                                  );
-                                })}
-                              </TableBody>
-                            </Table>
-                          </TableContainer>
+                        <Paper sx={{ overflow: "auto", maxHeight: "400px" }}>
+                          <Stack spacing={4}>
+                            {rows.slice().map((row) => {
+                              return (
+                                <Box
+                                  sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                  }}
+                                >
+                                  <Box
+                                    component="img"
+                                    sx={{
+                                      width: "150px",
+                                      borderRadius: "8px",
+                                      marginRight: "10px",
+                                    }}
+                                    alt="The bike"
+                                    src={row.bikeImg}
+                                  />
+                                  <Box>
+                                    <Typography sx={{ marginBottom: "10px" }}>
+                                      {row.bikeName}
+                                    </Typography>
+                                    <Rating
+                                      name="simple-controlled"
+                                      value={5}
+                                      readOnly
+                                    />
+                                    <Typography>{row.comment}</Typography>
+                                  </Box>
+                                </Box>
+                              );
+                            })}
+                          </Stack>
                         </Paper>
                       </Container>
                     </DialogTitle>
@@ -345,12 +378,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: 800,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
-  // display: "flex",
-  // justifyContent: "center",
-  // alignItems: "center",
+  maxHeight: "700px",
 };
