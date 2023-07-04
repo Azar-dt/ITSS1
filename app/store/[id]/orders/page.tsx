@@ -15,9 +15,11 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { Bike, Order } from "@prisma/client";
-// import axios from "axios";
+import { green } from "@mui/material/colors";
+import { Bike, Order, Status } from "@prisma/client";
+import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import useSWR from "swr";
 
@@ -30,7 +32,7 @@ type OrderInfo = {
   phoneNumber: string;
   startTime: Dayjs;
   endTime: Dayjs;
-  status: string;
+  status: Status;
   bike: Bike;
 };
 interface Column {
@@ -39,15 +41,6 @@ interface Column {
   minWidth?: number;
   align?: "center";
   format?: (value: number) => string;
-}
-
-// eslint-disable-next-line no-shadow
-enum Status {
-  REQUESTED = "REQUESTED",
-  ACCEPTED = "ACCEPTED",
-  REJECTED = "REJECTED",
-  CANCELLED = "CANCELLED",
-  COMPLETED = "COMPLETED",
 }
 
 const columns: readonly Column[] = [
@@ -69,11 +62,7 @@ const columns: readonly Column[] = [
 export default function Orders({ params }: { params: { id: string } }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const [form, setForm] = React.useState({
-    orderId: 0,
-    status: Status.REQUESTED,
-  });
+  const router = useRouter();
 
   const { data: orderData, isLoading: orderLoading } = useSWR(
     `/api/store/${params.id}/orders`,
@@ -98,10 +87,13 @@ export default function Orders({ params }: { params: { id: string } }) {
 
     const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
     if (updatedTableData) {
-      setForm({ orderId: rowId, status: Status.ACCEPTED });
+      // setForm({ orderId: rowId, status: Status.ACCEPTED });
+      const res = await axios.put(`/api/store/${params.id}/orders`, {
+        orderId: rowId,
+        status: Status.ACCEPTED,
+      });
     }
-
-    // const res = await axios.post("/api/store/...", { form });
+    router.refresh();
   };
 
   const handleReject = async (
@@ -112,12 +104,28 @@ export default function Orders({ params }: { params: { id: string } }) {
 
     const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
     if (updatedTableData) {
-      setForm({
+      const res = await axios.put(`/api/store/${params.id}/orders`, {
         orderId: rowId,
         status: Status.REJECTED,
       });
     }
-    // const res = await axios.post("/api/store/", { ...form });
+    router.refresh();
+  };
+
+  const handleComplete = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    rowId: number
+  ) => {
+    e.preventDefault();
+
+    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
+    if (updatedTableData) {
+      const res = await axios.put(`/api/store/${params.id}/orders`, {
+        orderId: rowId,
+        status: Status.COMPLETED,
+      });
+    }
+    router.refresh();
   };
 
   return (
@@ -187,29 +195,57 @@ export default function Orders({ params }: { params: { id: string } }) {
                             dayjs(row.endTime).format("HH:mm - DD-MM-YYYY")
                           )}
                         </TableCell>
-                        <TableCell align="center">
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              gap: "10px",
-                            }}
-                          >
-                            <Button
-                              variant="outlined"
-                              onClick={(e) => handleReject(e, row.id)}
+                        {row.status === "REQUESTED" ? (
+                          <TableCell align="center">
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "10px",
+                              }}
                             >
-                              Decline
-                            </Button>
-                            <Button
-                              variant="contained"
-                              onClick={(e) => handleAccept(e, row.id)}
+                              <Button
+                                variant="outlined"
+                                onClick={(e) => handleReject(e, row.id)}
+                              >
+                                Decline
+                              </Button>
+                              <Button
+                                variant="contained"
+                                onClick={(e) => handleAccept(e, row.id)}
+                              >
+                                Accept
+                              </Button>
+                            </Box>
+                          </TableCell>
+                        ) : (
+                          <TableCell>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "10px",
+                              }}
                             >
-                              Accept
-                            </Button>
-                          </Box>
-                        </TableCell>
+                              {row.status === "ACCEPTED" ? (
+                                <Button
+                                  variant="contained"
+                                  onClick={(e) => handleComplete(e, row.id)}
+                                >
+                                  Complete
+                                </Button>
+                              ) : (
+                                <Box>
+                                  <Typography borderColor={green}>
+                                    Completed
+                                  </Typography>
+                                </Box>
+                              )}
+                            </Box>
+                          </TableCell>
+                        )}
                       </TableRow>
                     );
                   })}

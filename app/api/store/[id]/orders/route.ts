@@ -14,7 +14,7 @@ export async function GET(
           storeId: Number(storeId),
         },
         status: {
-          not: Status.CANCELLED,
+          not: Status.CANCELLED || Status.REJECTED,
         },
       },
       include: {
