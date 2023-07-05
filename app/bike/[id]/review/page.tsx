@@ -15,7 +15,10 @@ type reviewContent = {
 };
 
 export default function StorePage({ params }: { params: { id: string } }) {
-  const [content, setContent] = useState<reviewContent>({});
+  const [content, setContent] = useState<reviewContent>({
+    rating: 0,
+    comment: "",
+  });
 
   const { data: bikeData, isLoading: bikeLoading } = useSWR<Bike>(
     `/api/bike/${params.id}`,
