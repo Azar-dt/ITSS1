@@ -49,7 +49,7 @@ const columns: readonly Column[] = [
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
   { id: "status", label: "状況", minWidth: 100 },
-  { id: "delete", label: "削除", minWidth: 300 },
+  { id: "delete", label: "アクション", minWidth: 300 },
 ];
 
 type OderType = Order & {
