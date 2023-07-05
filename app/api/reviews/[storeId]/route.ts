@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { storeId } = params;
-    const reviews = await prisma.order.findMany({
+    const reviews = await prisma.review.findMany({
       where: {
         bike: {
           storeId: Number(storeId),
