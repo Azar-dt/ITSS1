@@ -35,6 +35,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          paddingTop: "50px",
         }}
       >
         バイク評価

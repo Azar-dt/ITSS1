@@ -26,6 +26,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
 dayjs.extend(customParseFormat);
@@ -58,9 +59,10 @@ type OderType = Order & {
 export default function Orders() {
   const { data: currentUser } = useCurrentUser();
   const { data } = useSWR<OderType[]>(
-    `/api/orders/${currentUser?.id}`,
+    currentUser?.id ? `/api/orders/${currentUser.id}` : null,
     fetcher
   );
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const router = useRouter();
@@ -82,17 +84,22 @@ export default function Orders() {
   ) => {
     e.preventDefault();
 
-    const updatedTableData = data?.find((row: Order) => row.id === rowId);
-    if (updatedTableData) {
-      const res = await axios.put(
-        `/api/store/${currentUser?.store?.id}/orders`,
-        {
-          orderId: rowId,
-          status: Status.CANCELLED,
-        }
-      );
+    try {
+      const updatedTableData = data?.find((row: Order) => row.id === rowId);
+      if (updatedTableData) {
+        const res = await axios.put(
+          `/api/store/${currentUser?.store?.id}/orders`,
+          {
+            orderId: rowId,
+            status: Status.CANCELLED,
+          }
+        );
+        if (res.status === 200) window.location.reload();
+        toast.success("キャンセルしました");
+      }
+    } catch (error) {
+      toast.error("キャンセルできませんでした");
     }
-    router.refresh();
   };
 
   return (
