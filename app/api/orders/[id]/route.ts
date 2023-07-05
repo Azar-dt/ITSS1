@@ -14,6 +14,13 @@ export async function GET(
         status: {
           not: Status.CANCELLED,
         },
+        bike: {
+          reviews: {
+            none: {
+              userId: id,
+            },
+          },
+        },
       },
       include: {
         bike: true,

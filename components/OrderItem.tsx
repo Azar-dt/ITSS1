@@ -35,6 +35,7 @@ const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
       ...content,
       bikeId: id,
       userId: data.id,
+      rating: value,
     });
 
     if (res?.status !== 200) {
