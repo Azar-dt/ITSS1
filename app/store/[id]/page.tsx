@@ -47,6 +47,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
     `/api/reviews/${data?.id}`,
     fetcher
   );
+  const len = review ? review.length : 0;
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
@@ -195,56 +196,70 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           <Typography
                             variant="h4"
                             component="span"
-                            fontWeight={700}
+                            fontWeight={600}
                             my={4}
                           >
                             評価を見る
                           </Typography>
                         </Box>
 
-                        <Paper
-                          sx={{
-                            overflow: "auto",
-                            maxHeight: "400px",
-                            boxShadow: "none",
-                          }}
-                        >
-                          <Stack spacing={4}>
-                            {review &&
-                              review?.slice().map((row) => {
-                                return (
-                                  <Box
-                                    sx={{
-                                      width: "100%",
-                                      display: "flex",
-                                    }}
-                                  >
+                        {!len ? (
+                          <Paper
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            評価がありません。
+                          </Paper>
+                        ) : (
+                          <Paper
+                            sx={{
+                              overflow: "auto",
+                              maxHeight: "400px",
+                              boxShadow: "none",
+                            }}
+                          >
+                            <Stack spacing={4}>
+                              {review &&
+                                review?.slice().map((row) => {
+                                  return (
                                     <Box
-                                      component="img"
                                       sx={{
-                                        width: "150px",
-                                        borderRadius: "8px",
-                                        marginRight: "18px",
+                                        width: "100%",
+                                        display: "flex",
                                       }}
-                                      alt="The bike"
-                                      src={row.bike.imgUrl}
-                                    />
-                                    <Box>
-                                      <Typography sx={{ marginBottom: "10px" }}>
-                                        {row.bike.name}
-                                      </Typography>
-                                      <Rating
-                                        name="simple-controlled"
-                                        value={row.rating}
-                                        readOnly
+                                    >
+                                      <Box
+                                        component="img"
+                                        sx={{
+                                          width: "150px",
+                                          borderRadius: "8px",
+                                          marginRight: "18px",
+                                        }}
+                                        alt="The bike"
+                                        src={row.bike.imgUrl}
                                       />
-                                      <Typography>{row.comment}</Typography>
+                                      <Box>
+                                        <Typography
+                                          sx={{ marginBottom: "10px" }}
+                                        >
+                                          {row.bike.name}
+                                        </Typography>
+                                        <Rating
+                                          name="simple-controlled"
+                                          value={row.rating}
+                                          readOnly
+                                        />
+                                        <Typography>{row.comment}</Typography>
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                );
-                              })}
-                          </Stack>
-                        </Paper>
+                                  );
+                                })}
+                            </Stack>
+                          </Paper>
+                        )}
                       </Container>
                     </DialogTitle>
                   </Box>

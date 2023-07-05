@@ -69,6 +69,7 @@ export default function Orders({ params }: { params: { id: string } }) {
     `/api/store/${params.id}/orders`,
     fetcher
   );
+  const len = orderData ? orderData.length : 0;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -190,104 +191,123 @@ export default function Orders({ params }: { params: { id: string } }) {
                   })}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {orderData
-                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  ?.map((row: OrderInfo) => {
-                    const startTime = String(
-                      dayjs(row.startTime).format("HH:mm - DD-MM-YYYY")
-                    );
-                    return (
-                      <TableRow hover tabIndex={-1} key={row.id}>
-                        <TableCell align="center">
-                          <Box
-                            component="img"
-                            sx={{
-                              width: "150px",
-                              borderRadius: "8px",
-                            }}
-                            alt="The bike"
-                            src={row.bike.imgUrl}
-                          />
-                        </TableCell>
-                        <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.bike.name}</TableCell>
-                        <TableCell align="center">{row.phoneNumber}</TableCell>
-                        <TableCell align="center">
-                          {row.price.toLocaleString("en-EN")}₫
-                        </TableCell>
-                        <TableCell align="center">{startTime}</TableCell>
-                        <TableCell align="center">
-                          {String(
-                            dayjs(row.endTime).format("HH:mm - DD-MM-YYYY")
-                          )}
-                        </TableCell>
-                        {row.status === "REQUESTED" ? (
+              {!len ? (
+                <TableBody>
+                  <TableRow>
+                    <TableCell
+                      align="center"
+                      sx={{ fontWeight: "200" }}
+                      colSpan={8}
+                    >
+                      予約がありません。
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {orderData
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                    ?.map((row: OrderInfo) => {
+                      const startTime = String(
+                        dayjs(row.startTime).format("HH:mm - DD-MM-YYYY")
+                      );
+                      return (
+                        <TableRow hover tabIndex={-1} key={row.id}>
                           <TableCell align="center">
                             <Box
+                              component="img"
                               sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "10px",
+                                width: "150px",
+                                borderRadius: "8px",
                               }}
-                            >
-                              <Button
-                                variant="outlined"
-                                onClick={(e) => handleReject(e, row.id)}
-                              >
-                                Decline
-                              </Button>
-                              <Button
-                                variant="contained"
-                                onClick={(e) => handleAccept(e, row.id)}
-                              >
-                                Accept
-                              </Button>
-                            </Box>
+                              alt="The bike"
+                              src={row.bike.imgUrl}
+                            />
                           </TableCell>
-                        ) : (
-                          <TableCell>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "10px",
-                              }}
-                            >
-                              {row.status === "ACCEPTED" ? (
+                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.bike.name}</TableCell>
+                          <TableCell align="center">
+                            {row.phoneNumber}
+                          </TableCell>
+                          <TableCell align="center">
+                            {row.price.toLocaleString("en-EN")}₫
+                          </TableCell>
+                          <TableCell align="center">{startTime}</TableCell>
+                          <TableCell align="center">
+                            {String(
+                              dayjs(row.endTime).format("HH:mm - DD-MM-YYYY")
+                            )}
+                          </TableCell>
+                          {row.status === "REQUESTED" ? (
+                            <TableCell align="center">
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "10px",
+                                }}
+                              >
+                                <Button
+                                  variant="outlined"
+                                  onClick={(e) => handleReject(e, row.id)}
+                                >
+                                  Decline
+                                </Button>
                                 <Button
                                   variant="contained"
-                                  onClick={(e) => handleComplete(e, row.id)}
+                                  onClick={(e) => handleAccept(e, row.id)}
                                 >
-                                  Complete
+                                  Accept
                                 </Button>
-                              ) : (
-                                <Box
-                                  component={"div"}
-                                  sx={{
-                                    borderRadius: "4px",
-                                    border: "1px solid green",
-                                  }}
-                                >
-                                  <Typography
-                                    color={"green"}
+                              </Box>
+                            </TableCell>
+                          ) : (
+                            <TableCell>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "10px",
+                                }}
+                              >
+                                {row.status === "ACCEPTED" ? (
+                                  <Button
+                                    variant="contained"
+                                    onClick={(e) => handleComplete(e, row.id)}
+                                  >
+                                    Complete
+                                  </Button>
+                                ) : (
+                                  <Box
+                                    component={"div"}
                                     sx={{
-                                      padding: "5px 10px",
+                                      borderRadius: "4px",
+                                      border: "1px solid green",
                                     }}
                                   >
-                                    Completed
-                                  </Typography>
-                                </Box>
-                              )}
-                            </Box>
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
+                                    <Typography
+                                      color={"green"}
+                                      sx={{
+                                        padding: "5px 10px",
+                                      }}
+                                    >
+                                      Completed
+                                    </Typography>
+                                  </Box>
+                                )}
+                              </Box>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
           <TablePagination
