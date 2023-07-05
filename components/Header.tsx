@@ -50,14 +50,14 @@ export default function Header() {
           title: "Store",
           onclick: () => {
             handleClose();
-            router.push("/store");
+            router.push(`/store/${data?.store.id}`);
           },
         },
         {
           title: "Orders",
           onclick: () => {
             handleClose();
-            router.push("/store/orders");
+            router.push(`/store/${data?.store.id}/orders`);
           },
         },
         {
@@ -71,7 +71,7 @@ export default function Header() {
       ];
     }
     return [];
-  }, [data?.role, router]);
+  }, [data?.role, data?.store.id, router]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
