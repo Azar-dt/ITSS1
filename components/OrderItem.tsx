@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Bike } from "@prisma/client";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-hot-toast";
 
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
+  const router = useRouter();
   const { data, isLoading } = useCurrentUser();
   const [value, setValue] = React.useState<number>(0);
 
@@ -40,6 +42,7 @@ const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
       return;
     }
     toast.success("success");
+    router.push("/orders");
   };
 
   return (
