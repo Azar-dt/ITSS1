@@ -1,3 +1,4 @@
+import useCurrentUser from "@/hooks/useCurrentUser";
 import {
   Button,
   Card,
@@ -19,6 +20,7 @@ type Props = {
 
 const BikeCard: React.FC<Props> = ({ bike }) => {
   const router = useRouter();
+  const { data } = useCurrentUser();
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleMouseOver = () => {
@@ -74,7 +76,7 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
             {bike.price.toLocaleString("en-EN")} ₫
           </Typography>
         </CardContent>
-        {isHovered && (
+        {isHovered && data?.id && (
           <CardActions
             sx={{
               alignItems: "center",
