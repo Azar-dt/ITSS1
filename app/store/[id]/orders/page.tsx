@@ -33,6 +33,7 @@ type OrderInfo = {
   endTime: Dayjs;
   status: Status;
   bike: Bike;
+  price: number;
 };
 interface Column {
   id: string;
