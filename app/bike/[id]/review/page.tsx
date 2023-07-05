@@ -40,7 +40,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
       <OrderItem
         content={content}
         setContent={setContent}
-        bike={bikeData}
+        bike={bikeData as Bike}
         id={Number(params.id)}
       />
       <Footer />
