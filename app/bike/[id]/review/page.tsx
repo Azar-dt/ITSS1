@@ -1,53 +1,26 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import OrderItem from "@/components/OrderItem";
-import { Divider } from "@mui/material";
+import fetcher from "@/libs/fetcher";
 import Typography from "@mui/material/Typography";
-import { Bike, Order } from "@prisma/client";
+import { Bike } from "@prisma/client";
 import { useState } from "react";
-import styled1 from "styled-components";
+import useSWR from "swr";
 
-type OrderWithBikeInfo = Order & {
-  bike: Pick<Bike, "name" | "imgUrl">;
+type reviewContent = {
+  rating: number;
+  comment: string;
 };
 
-const OrderCard = styled1.div`
-  margin-top: 16px;
-`;
+export default function StorePage({ params }: { params: { id: string } }) {
+  const [content, setContent] = useState<reviewContent>({});
 
-const DEFAULT_IMG = "/default-bike.jpg";
-const DEFAULT_TIME = new Date(Date.now());
-const DATA: {
-  total: number;
-  orders: OrderWithBikeInfo[];
-} = {
-  total: 1,
-  orders: [
-    {
-      id: 1,
-      userId: "1",
-      bikeId: 2,
-      email: "test@gmail.com",
-      name: "order 1",
-      phoneNumber: "123456789",
-      price: 1000,
-      startTime: DEFAULT_TIME,
-      endTime: DEFAULT_TIME,
-      status: "ACCEPTED",
-      createdAt: DEFAULT_TIME,
-      updatedAt: DEFAULT_TIME,
-      bike: {
-        name: "Wave Alpha 1",
-        imgUrl: DEFAULT_IMG,
-      },
-    },
-  ],
-};
-
-export default function StorePage() {
-  const [cursor] = useState(0);
-  const take = 3;
+  const { data: bikeData, isLoading: bikeLoading } = useSWR<Bike>(
+    `/api/bike/${params.id}`,
+    fetcher
+  );
 
   return (
     <>
@@ -55,19 +28,22 @@ export default function StorePage() {
       <Typography
         variant="h3"
         sx={{
-          fontWeight: "600",
-          marginLeft: "600px",
-          marginTop: "15px",
+          fontWeight: "500",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         バイク評価
       </Typography>
-      {DATA.orders.slice(cursor, cursor + take).map((order) => (
-        <OrderCard>
-          <OrderItem order={order} key={order.id} />
-          <Divider sx={{ marginTop: 2, boxShadow: "0 6px 6px #ccc" }} />
-        </OrderCard>
-      ))}
+
+      <OrderItem
+        content={content}
+        setContent={setContent}
+        bike={bikeData}
+        id={Number(params.id)}
+      />
+      <Footer />
     </>
   );
 }
