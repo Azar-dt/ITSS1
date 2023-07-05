@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import StoreBikeList, { BIKE_TYPES } from "@/components/StoreBikeList";
 import fetcher from "@/libs/fetcher";
 import Modal from "@mui/material/Modal";
-import { Store } from "@prisma/client";
+import { Bike, Review, Store, User } from "@prisma/client";
 import * as React from "react";
 import useSWR from "swr";
 
@@ -29,76 +29,10 @@ interface TabPanelProps {
   value: number;
 }
 
-const imgURL =
-  // eslint-disable-next-line max-len, sonarjs/no-duplicate-string
-  "https://images.unsplash.com/photo-1508357941501-0924cf312bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW90b2Jpa2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80";
-
-const rows = [
-  {
-    id: 1,
-    userName: "John",
-    bikeImg: imgURL,
-    bikeName: "Ducati",
-    price: 100000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 2,
-    userName: "Anna",
-    bikeImg: imgURL,
-    bikeName: "Yamaha",
-    price: 123000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 3,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 4,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 5,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 6,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 7,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-  {
-    id: 8,
-    userName: "Lenna",
-    bikeImg: imgURL,
-    bikeName: "Honda",
-    price: 233000,
-    comment: "はやい、はやい",
-  },
-];
+type ReviewType = Review & {
+  bike: Bike;
+  user: User;
+};
 
 export default function StorePage({ params }: { params: { id: string } }) {
   const [value, setValue] = React.useState(0);
@@ -108,9 +42,11 @@ export default function StorePage({ params }: { params: { id: string } }) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, isLoading } = useSWR<Store>(`/api/store/${params.id}`, fetcher);
+  const { data } = useSWR<Store>(`/api/store/${params.id}`, fetcher);
+  const { data: review } = useSWR<ReviewType[]>(
+    `/api/reviews/${data?.id}`,
+    fetcher
+  );
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
@@ -257,49 +193,56 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           }}
                         >
                           <Typography
-                            variant="h3"
+                            variant="h4"
                             component="span"
                             fontWeight={700}
-                            my={5}
+                            my={4}
                           >
                             評価を見る
                           </Typography>
                         </Box>
 
-                        <Paper sx={{ overflow: "auto", maxHeight: "400px" }}>
+                        <Paper
+                          sx={{
+                            overflow: "auto",
+                            maxHeight: "400px",
+                            boxShadow: "none",
+                          }}
+                        >
                           <Stack spacing={4}>
-                            {rows.slice().map((row) => {
-                              return (
-                                <Box
-                                  sx={{
-                                    width: "100%",
-                                    display: "flex",
-                                  }}
-                                >
+                            {review &&
+                              review?.slice().map((row) => {
+                                return (
                                   <Box
-                                    component="img"
                                     sx={{
-                                      width: "150px",
-                                      borderRadius: "8px",
-                                      marginRight: "10px",
+                                      width: "100%",
+                                      display: "flex",
                                     }}
-                                    alt="The bike"
-                                    src={row.bikeImg}
-                                  />
-                                  <Box>
-                                    <Typography sx={{ marginBottom: "10px" }}>
-                                      {row.bikeName}
-                                    </Typography>
-                                    <Rating
-                                      name="simple-controlled"
-                                      value={5}
-                                      readOnly
+                                  >
+                                    <Box
+                                      component="img"
+                                      sx={{
+                                        width: "150px",
+                                        borderRadius: "8px",
+                                        marginRight: "18px",
+                                      }}
+                                      alt="The bike"
+                                      src={row.bike.imgUrl}
                                     />
-                                    <Typography>{row.comment}</Typography>
+                                    <Box>
+                                      <Typography sx={{ marginBottom: "10px" }}>
+                                        {row.bike.name}
+                                      </Typography>
+                                      <Rating
+                                        name="simple-controlled"
+                                        value={row.rating}
+                                        readOnly
+                                      />
+                                      <Typography>{row.comment}</Typography>
+                                    </Box>
                                   </Box>
-                                </Box>
-                              );
-                            })}
+                                );
+                              })}
                           </Stack>
                         </Paper>
                       </Container>
@@ -380,7 +323,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 800,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius: "10px",
   boxShadow: 24,
   maxHeight: "700px",
 };
