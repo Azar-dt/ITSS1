@@ -33,6 +33,7 @@ type OrderInfo = {
   endTime: Dayjs;
   status: Status;
   bike: Bike;
+  price: number;
 };
 interface Column {
   id: string;
@@ -186,7 +187,7 @@ export default function Orders({ params }: { params: { id: string } }) {
                         <TableCell align="center">{row.bike.name}</TableCell>
                         <TableCell align="center">{row.phoneNumber}</TableCell>
                         <TableCell align="center">
-                          {row.bike.price.toLocaleString("en-EN")}₫
+                          {row.price.toLocaleString("en-EN")}₫
                         </TableCell>
                         <TableCell align="center">{startTime}</TableCell>
                         <TableCell align="center">

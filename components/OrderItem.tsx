@@ -1,38 +1,50 @@
+import useCurrentUser from "@/hooks/useCurrentUser";
 import {
+  Box,
   Button,
   Grid,
   Rating,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { Bike, Order, Status } from "@prisma/client";
-import Image from "next/image";
+import { Bike } from "@prisma/client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "react-hot-toast";
 
 type Props = {
-  order: Order & {
-    bike: Pick<Bike, "name" | "imgUrl">;
+  id: number;
+  content: { rating: number; comment: string };
+  setContent: (reviewContent: { rating: number; comment: string }) => void;
+  bike: Bike;
+};
+
+const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
+  const router = useRouter();
+  const { data, isLoading } = useCurrentUser();
+  const [value, setValue] = React.useState<number>(0);
+
+  const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent({ ...content, comment: e.target.value });
   };
-};
 
-const statusMapping = (status: string): string => {
-  switch (status) {
-    case Status.ACCEPTED:
-      return "確認 ✔";
-    case Status.REQUESTED:
-      return "待っている ⚠";
-    case Status.REJECTED:
-      return "";
-    case Status.CANCELLED:
-      return "";
-    case Status.COMPLETED:
-      return "";
-    default:
-      return "";
-  }
-};
+  const handleReview = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = await axios.post("/api/reviews", {
+      ...content,
+      bikeId: id,
+      userId: data.id,
+    });
 
-const OrderItem: React.FC<Props> = ({ order }) => {
+    if (res?.status !== 200) {
+      toast.error(`error\n${res.statusText}`);
+      return;
+    }
+    toast.success("success");
+    router.push("/orders");
+  };
+
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid
@@ -44,66 +56,48 @@ const OrderItem: React.FC<Props> = ({ order }) => {
           justifyContent: "flex-end",
         }}
       >
-        <Image
-          src={order.bike.imgUrl}
-          alt={order.name}
-          width={120}
-          height={120}
-        />
+        <img src={bike?.imgUrl} alt={bike?.name} width={150} />
       </Grid>
       <Grid item xs={6}>
         <Typography fontSize={20} fontWeight={600}>
-          {order.bike.name}
+          {bike?.name}
         </Typography>
         <Typography sx={{ color: "#f01d0e", marginBottom: 3 }}>
-          {order.price}円
+          {bike?.price.toLocaleString("en-EN")}VND
         </Typography>
-        <Typography>Status: {statusMapping(order.status)}</Typography>
-        {order.status === Status.ACCEPTED && (
-          <>
-            <Typography sx={{ marginTop: 2 }}>
-              評価: <Rating name="read-only" value={5} precision={0.5} />
-            </Typography>
-            <TextareaAutosize
-              minRows={5}
-              style={{
-                width: "100%",
-                borderRadius: 4,
-                padding: 4,
-                marginTop: 4,
-              }}
-              name="Solid"
-              placeholder="評価"
-            />
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#eebdf2",
-                color: "#000",
-                float: "right",
-                marginRight: -1,
-                fontWeight: 600,
-                marginTop: 1,
-              }}
-            >
-              評価
-            </Button>
-          </>
-        )}
-        {order.status === Status.REQUESTED && (
+
+        <Box component="form" onSubmit={handleReview}>
+          <Rating
+            name="simple-controlled"
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(Number(newValue));
+              setContent({ ...content, rating: value });
+            }}
+          />
+          <TextareaAutosize
+            minRows={5}
+            style={{
+              width: "100%",
+              borderRadius: 4,
+              minHeight: 50,
+            }}
+            name="comment"
+            placeholder="評価"
+            onChange={handleChange}
+            value={content.comment}
+          />
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#f58d47",
-              color: "#000",
               float: "right",
-              marginRight: -1,
-              fontWeight: 600,
+              margin: 2,
             }}
+            type="submit"
           >
-            キャンセル
+            評価
           </Button>
-        )}
+        </Box>
       </Grid>
     </Grid>
   );
