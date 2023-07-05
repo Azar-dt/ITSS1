@@ -71,7 +71,7 @@ export default function Header() {
       ];
     }
     return [];
-  }, [data?.role, data?.store.id, router]);
+  }, [data?.role, data?.store?.id, router]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

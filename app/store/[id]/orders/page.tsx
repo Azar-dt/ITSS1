@@ -20,6 +20,7 @@ import axios from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
 type OrderInfo = {
@@ -85,15 +86,23 @@ export default function Orders({ params }: { params: { id: string } }) {
   ) => {
     e.preventDefault();
 
-    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
-    if (updatedTableData) {
-      // setForm({ orderId: rowId, status: Status.ACCEPTED });
-      const res = await axios.put(`/api/store/${params.id}/orders`, {
-        orderId: rowId,
-        status: Status.ACCEPTED,
-      });
+    try {
+      const updatedTableData = orderData?.find(
+        (row: Order) => row.id === rowId
+      );
+      if (updatedTableData) {
+        const res = await axios.put(`/api/store/${params.id}/orders`, {
+          orderId: rowId,
+          status: Status.ACCEPTED,
+        });
+        if (res.status === 200) {
+          toast.success("Accepted successfully");
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      toast.error(`Something went wrong ${error}`);
     }
-    router.refresh();
   };
 
   const handleReject = async (
@@ -102,14 +111,23 @@ export default function Orders({ params }: { params: { id: string } }) {
   ) => {
     e.preventDefault();
 
-    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
-    if (updatedTableData) {
-      const res = await axios.put(`/api/store/${params.id}/orders`, {
-        orderId: rowId,
-        status: Status.REJECTED,
-      });
+    try {
+      const updatedTableData = orderData?.find(
+        (row: Order) => row.id === rowId
+      );
+      if (updatedTableData) {
+        const res = await axios.put(`/api/store/${params.id}/orders`, {
+          orderId: rowId,
+          status: Status.REJECTED,
+        });
+        if (res.status === 200) {
+          toast.success("Reject successfully");
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      toast.error(`Something went wrong ${error}`);
     }
-    router.refresh();
   };
 
   const handleComplete = async (
@@ -118,14 +136,23 @@ export default function Orders({ params }: { params: { id: string } }) {
   ) => {
     e.preventDefault();
 
-    const updatedTableData = orderData?.find((row: Order) => row.id === rowId);
-    if (updatedTableData) {
-      const res = await axios.put(`/api/store/${params.id}/orders`, {
-        orderId: rowId,
-        status: Status.COMPLETED,
-      });
+    try {
+      const updatedTableData = orderData?.find(
+        (row: Order) => row.id === rowId
+      );
+      if (updatedTableData) {
+        const res = await axios.put(`/api/store/${params.id}/orders`, {
+          orderId: rowId,
+          status: Status.COMPLETED,
+        });
+        if (res.status === 200) {
+          toast.success("Order completed successfully");
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      toast.error(`Something went wrong ${error}`);
     }
-    router.refresh();
   };
 
   return (

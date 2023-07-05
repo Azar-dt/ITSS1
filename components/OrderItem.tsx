@@ -22,7 +22,7 @@ type Props = {
 
 const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
   const router = useRouter();
-  const { data, isLoading } = useCurrentUser();
+  const { data } = useCurrentUser();
   const [value, setValue] = React.useState<number>(0);
 
   const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -35,6 +35,7 @@ const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
       ...content,
       bikeId: id,
       userId: data.id,
+      rating: value,
     });
 
     if (res?.status !== 200) {
@@ -42,21 +43,21 @@ const OrderItem: React.FC<Props> = ({ content, setContent, bike, id }) => {
       return;
     }
     toast.success("success");
-    router.push("/orders");
+    router.back();
   };
 
   return (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid
         item
-        xs={3}
+        xs={4}
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
         }}
       >
-        <img src={bike?.imgUrl} alt={bike?.name} width={150} />
+        <img src={bike?.imgUrl} alt={bike?.name} width={250} />
       </Grid>
       <Grid item xs={6}>
         <Typography fontSize={20} fontWeight={600}>

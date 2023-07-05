@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import fetcher from "@/libs/fetcher";
 import { DeleteForeverRounded } from "@mui/icons-material";
+import RateReviewIcon from "@mui/icons-material/RateReview";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -16,13 +17,16 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { Bike, Order } from "@prisma/client";
+import { Bike, Order, Status } from "@prisma/client";
+import axios from "axios";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjsIsBetween from "dayjs/plugin/isBetween";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { useRouter } from "next/navigation";
 import * as React from "react";
+import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
 dayjs.extend(customParseFormat);
@@ -45,7 +49,7 @@ const columns: readonly Column[] = [
   { id: "startTime", label: "開始時間", minWidth: 100 },
   { id: "endTime", label: "終了時間", minWidth: 100 },
   { id: "status", label: "状況", minWidth: 100 },
-  { id: "delete", label: "削除", minWidth: 300 },
+  { id: "delete", label: "アクション", minWidth: 300 },
 ];
 
 type OderType = Order & {
@@ -55,11 +59,13 @@ type OderType = Order & {
 export default function Orders() {
   const { data: currentUser } = useCurrentUser();
   const { data } = useSWR<OderType[]>(
-    `/api/orders/${currentUser?.id}`,
+    currentUser?.id ? `/api/orders/${currentUser.id}` : null,
     fetcher
   );
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const router = useRouter();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -70,6 +76,30 @@ export default function Orders() {
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleCancel = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    rowId: number
+  ) => {
+    e.preventDefault();
+
+    try {
+      const updatedTableData = data?.find((row: Order) => row.id === rowId);
+      if (updatedTableData) {
+        const res = await axios.put(
+          `/api/store/${currentUser?.store?.id}/orders`,
+          {
+            orderId: rowId,
+            status: Status.CANCELLED,
+          }
+        );
+        if (res.status === 200) window.location.reload();
+        toast.success("キャンセルしました");
+      }
+    } catch (error) {
+      toast.error("キャンセルできませんでした");
+    }
   };
 
   return (
@@ -158,15 +188,34 @@ export default function Orders() {
                               {row.status}
                             </Typography>
                           </TableCell>
-                          <TableCell align="center">
-                            <Button
-                              variant="contained"
-                              onClick={() => handleClick()}
-                            >
-                              削除
-                              <DeleteForeverRounded fontSize="small" />
-                            </Button>
-                          </TableCell>
+                          {row.status === "REQUESTED" ||
+                          row.status === "ACCEPTED" ? (
+                            <TableCell align="center">
+                              <Button
+                                variant="outlined"
+                                onClick={(e) => handleCancel(e, row.id)}
+                              >
+                                キャンセル
+                                <DeleteForeverRounded fontSize="small" />
+                              </Button>
+                            </TableCell>
+                          ) : (
+                            <TableCell align="center">
+                              {row.status === "COMPLETED" ? (
+                                <Button
+                                  variant="contained"
+                                  onClick={() =>
+                                    router.push(`bike/${row?.bike?.id}/review`)
+                                  }
+                                >
+                                  評価
+                                  <RateReviewIcon fontSize="small" />
+                                </Button>
+                              ) : (
+                                ""
+                              )}
+                            </TableCell>
+                          )}
                         </TableRow>
                       );
                     })}
@@ -176,7 +225,8 @@ export default function Orders() {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={data ? data?.length : -1}
+            // eslint-disable-next-line no-unsafe-optional-chaining
+            count={data ? data?.length / rowsPerPage : -1}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -186,9 +236,4 @@ export default function Orders() {
       </Container>
     </>
   );
-}
-
-function handleClick() {
-  // eslint-disable-next-line no-console
-  console.log("Clicked");
 }
