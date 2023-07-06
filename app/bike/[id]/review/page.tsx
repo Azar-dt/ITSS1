@@ -20,10 +20,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
     comment: "",
   });
 
-  const { data: bikeData, isLoading: bikeLoading } = useSWR<Bike>(
-    `/api/bike/${params.id}`,
-    fetcher
-  );
+  const { data: bikeData } = useSWR<Bike>(`/api/bike/${params.id}`, fetcher);
 
   return (
     <>
