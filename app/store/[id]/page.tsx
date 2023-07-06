@@ -155,7 +155,6 @@ export default function StorePage({ params }: { params: { id: string } }) {
                 <Button
                   sx={{ marginTop: "30px", maxWidth: "25%" }}
                   variant="contained"
-                  href="#contained-buttons"
                   onClick={handleOpen}
                 >
                   評価を見る
@@ -209,41 +208,65 @@ export default function StorePage({ params }: { params: { id: string } }) {
                             boxShadow: "none",
                           }}
                         >
-                          <Stack spacing={4}>
-                            {review &&
-                              review?.slice().map((row) => {
-                                return (
-                                  <Box
-                                    sx={{
-                                      width: "100%",
-                                      display: "flex",
-                                    }}
-                                  >
+                          {review?.length !== 0 ? (
+                            <Stack spacing={4}>
+                              {review &&
+                                review?.slice().map((row) => {
+                                  return (
                                     <Box
-                                      component="img"
                                       sx={{
-                                        width: "150px",
-                                        borderRadius: "8px",
-                                        marginRight: "18px",
+                                        width: "100%",
+                                        display: "flex",
                                       }}
-                                      alt="The bike"
-                                      src={row.bike.imgUrl}
-                                    />
-                                    <Box>
-                                      <Typography sx={{ marginBottom: "10px" }}>
-                                        {row.bike.name}
-                                      </Typography>
-                                      <Rating
-                                        name="simple-controlled"
-                                        value={row.rating}
-                                        readOnly
+                                    >
+                                      <Box
+                                        component="img"
+                                        sx={{
+                                          width: "150px",
+                                          borderRadius: "8px",
+                                          marginRight: "18px",
+                                        }}
+                                        alt="The bike"
+                                        src={row.bike.imgUrl}
                                       />
-                                      <Typography>{row.comment}</Typography>
+                                      <Box>
+                                        <Typography
+                                          sx={{ marginBottom: "10px" }}
+                                        >
+                                          {row.bike.name}
+                                        </Typography>
+                                        <Rating
+                                          name="simple-controlled"
+                                          value={row.rating}
+                                          readOnly
+                                        />
+                                        <Typography>{row.comment}</Typography>
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                );
-                              })}
-                          </Stack>
+                                  );
+                                })}
+                            </Stack>
+                          ) : (
+                            <Box
+                              p={2}
+                              sx={{
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Typography
+                                variant="subtitle1"
+                                sx={{
+                                  paddingBottom: "20px",
+                                }}
+                              >
+                                評価がありません
+                              </Typography>
+                            </Box>
+                          )}
                         </Paper>
                       </Container>
                     </DialogTitle>
