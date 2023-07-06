@@ -233,7 +233,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                                         <Typography
                                           sx={{ marginBottom: "10px" }}
                                         >
-                                          {row.bike.name}
+                                          {row.user.username}
                                         </Typography>
                                         <Rating
                                           name="simple-controlled"
