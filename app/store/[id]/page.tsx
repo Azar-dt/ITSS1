@@ -51,7 +51,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const [bikeType, setBikeType] = React.useState<string | undefined>(undefined);
   const [price, setPrice] = React.useState<number | undefined>(undefined);
   const handleListItemClick = (
@@ -60,10 +60,14 @@ export default function StorePage({ params }: { params: { id: string } }) {
   ) => {
     if (index === selectedIndex) {
       setBikeType(undefined);
+      setSelectedIndex(-1);
+      return;
     }
     setSelectedIndex(index);
     // eslint-disable-next-line security/detect-object-injection
-    setBikeType(BIKE_TYPES[index].name);
+    if (index === -1) {
+      setBikeType(undefined);
+    } else setBikeType(BIKE_TYPES[index].name);
   };
 
   const { data: bikeData, isLoading: bikeLoading } = useSWR(
@@ -156,7 +160,6 @@ export default function StorePage({ params }: { params: { id: string } }) {
                 <Button
                   sx={{ marginTop: "30px", maxWidth: "25%" }}
                   variant="contained"
-                  href="#contained-buttons"
                   onClick={handleOpen}
                 >
                   評価を見る
@@ -203,24 +206,14 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           </Typography>
                         </Box>
 
-                        {!len ? (
-                          <Paper
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            評価がありません。
-                          </Paper>
-                        ) : (
-                          <Paper
-                            sx={{
-                              overflow: "auto",
-                              maxHeight: "400px",
-                              boxShadow: "none",
-                            }}
-                          >
+                        <Paper
+                          sx={{
+                            overflow: "auto",
+                            maxHeight: "400px",
+                            boxShadow: "none",
+                          }}
+                        >
+                          {review?.length !== 0 ? (
                             <Stack spacing={4}>
                               {review &&
                                 review?.slice().map((row) => {
@@ -258,8 +251,28 @@ export default function StorePage({ params }: { params: { id: string } }) {
                                   );
                                 })}
                             </Stack>
-                          </Paper>
-                        )}
+                          ) : (
+                            <Box
+                              p={2}
+                              sx={{
+                                width: "100%",
+                                height: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Typography
+                                variant="subtitle1"
+                                sx={{
+                                  paddingBottom: "20px",
+                                }}
+                              >
+                                評価がありません
+                              </Typography>
+                            </Box>
+                          )}
+                        </Paper>
                       </Container>
                     </DialogTitle>
                   </Box>
@@ -331,6 +344,7 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
 const style = {
   position: "absolute",
   top: "50%",
