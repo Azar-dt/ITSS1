@@ -62,6 +62,7 @@ export default function Orders() {
     currentUser?.id ? `/api/orders/${currentUser.id}` : null,
     fetcher
   );
+  const len = data ? data.length : 0;
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -143,90 +144,113 @@ export default function Orders() {
                   })}
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {data &&
-                  data
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    ?.map((row) => {
-                      return (
-                        <TableRow hover tabIndex={-1} key={row.id}>
-                          <TableCell align="center">{row.name}</TableCell>
-                          <TableCell align="center">
-                            <Box
-                              component="img"
-                              sx={{
-                                width: "150px",
-                                borderRadius: "8px",
-                              }}
-                              alt="The bike"
-                              src={row?.bike.imgUrl}
-                            />
-                          </TableCell>
-                          <TableCell align="center">{row?.bike.name}</TableCell>
-                          <TableCell align="center">
-                            {row.price.toLocaleString("vi-VN")} VND
-                          </TableCell>
-                          <TableCell align="center">
-                            {dayjs
-                              .tz(row.startTime.toString(), "Asia/Ho_Chi_Minh")
-                              .format("YYYY/MM/DD HH:mm")}
-                          </TableCell>
-                          <TableCell align="center">
-                            {dayjs
-                              .tz(row.endTime.toString(), "Asia/Ho_Chi_Minh")
-                              .format("YYYY/MM/DD HH:mm")}
-                          </TableCell>
-                          <TableCell align="center">
-                            <Typography
-                              variant="subtitle2"
-                              component="span"
-                              fontWeight={700}
-                              my={2}
-                              px={2}
-                              py={1}
-                            >
-                              {row.status}
-                            </Typography>
-                          </TableCell>
-                          {row.status === "REQUESTED" ||
-                          row.status === "ACCEPTED" ? (
+              {!len ? (
+                <TableBody>
+                  <TableRow>
+                    <TableCell
+                      align="center"
+                      sx={{ fontWeight: "200" }}
+                      colSpan={8}
+                    >
+                      予約がありません。
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {data &&
+                    data
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      ?.map((row) => {
+                        return (
+                          <TableRow hover tabIndex={-1} key={row.id}>
+                            <TableCell align="center">{row.name}</TableCell>
                             <TableCell align="center">
-                              <Button
-                                variant="outlined"
-                                onClick={(e) => handleCancel(e, row.id)}
+                              <Box
+                                component="img"
+                                sx={{
+                                  width: "150px",
+                                  borderRadius: "8px",
+                                }}
+                                alt="The bike"
+                                src={row?.bike.imgUrl}
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              {row?.bike.name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.price.toLocaleString("vi-VN")} VND
+                            </TableCell>
+                            <TableCell align="center">
+                              {dayjs
+                                .tz(
+                                  row.startTime.toString(),
+                                  "Asia/Ho_Chi_Minh"
+                                )
+                                .format("YYYY/MM/DD HH:mm")}
+                            </TableCell>
+                            <TableCell align="center">
+                              {dayjs
+                                .tz(row.endTime.toString(), "Asia/Ho_Chi_Minh")
+                                .format("YYYY/MM/DD HH:mm")}
+                            </TableCell>
+                            <TableCell align="center">
+                              <Typography
+                                variant="subtitle2"
+                                component="span"
+                                fontWeight={700}
+                                my={2}
+                                px={2}
+                                py={1}
                               >
-                                キャンセル
-                                <DeleteForeverRounded fontSize="small" />
-                              </Button>
+                                {row.status}
+                              </Typography>
                             </TableCell>
-                          ) : (
-                            <TableCell align="center">
-                              {row.status === "COMPLETED" ? (
+                            {row.status === "REQUESTED" ||
+                            row.status === "ACCEPTED" ? (
+                              <TableCell align="center">
                                 <Button
-                                  variant="contained"
-                                  onClick={() =>
-                                    router.push(`bike/${row?.bike?.id}/review`)
-                                  }
+                                  variant="outlined"
+                                  onClick={(e) => handleCancel(e, row.id)}
                                 >
-                                  評価
-                                  <RateReviewIcon fontSize="small" />
+                                  キャンセル
+                                  <DeleteForeverRounded fontSize="small" />
                                 </Button>
-                              ) : (
-                                ""
-                              )}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      );
-                    })}
-              </TableBody>
+                              </TableCell>
+                            ) : (
+                              <TableCell align="center">
+                                {row.status === "COMPLETED" ? (
+                                  <Button
+                                    variant="contained"
+                                    onClick={() =>
+                                      router.push(
+                                        `bike/${row?.bike?.id}/review`
+                                      )
+                                    }
+                                  >
+                                    評価
+                                    <RateReviewIcon fontSize="small" />
+                                  </Button>
+                                ) : (
+                                  ""
+                                )}
+                              </TableCell>
+                            )}
+                          </TableRow>
+                        );
+                      })}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            // eslint-disable-next-line no-unsafe-optional-chaining
-            count={data ? data?.length / rowsPerPage : -1}
+            count={data ? data?.length : 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

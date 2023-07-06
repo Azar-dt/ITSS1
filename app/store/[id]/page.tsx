@@ -47,6 +47,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
     `/api/reviews/${data?.id}`,
     fetcher
   );
+  const len = review ? review.length : 0;
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
@@ -198,7 +199,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                           <Typography
                             variant="h4"
                             component="span"
-                            fontWeight={700}
+                            fontWeight={600}
                             my={4}
                           >
                             評価を見る
