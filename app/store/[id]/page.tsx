@@ -50,7 +50,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const [bikeType, setBikeType] = React.useState<string | undefined>(undefined);
   const [price, setPrice] = React.useState<number | undefined>(undefined);
   const handleListItemClick = (
@@ -59,10 +59,14 @@ export default function StorePage({ params }: { params: { id: string } }) {
   ) => {
     if (index === selectedIndex) {
       setBikeType(undefined);
+      setSelectedIndex(-1);
+      return;
     }
     setSelectedIndex(index);
     // eslint-disable-next-line security/detect-object-injection
-    setBikeType(BIKE_TYPES[index].name);
+    if (index === -1) {
+      setBikeType(undefined);
+    } else setBikeType(BIKE_TYPES[index].name);
   };
 
   const { data: bikeData, isLoading: bikeLoading } = useSWR(
