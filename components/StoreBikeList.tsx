@@ -107,7 +107,10 @@ const StoreBikeList: React.FC<Props> = ({
             </Typography>
             <Divider />
             <List component="nav" aria-label="secondary mailbox folder">
-              <ListItemButton>
+              <ListItemButton
+                selected={selectedIndex === -1}
+                onClick={(event) => handleListItemClick(event, -1)}
+              >
                 <ListItemText primary="バイクの種類別" />
               </ListItemButton>
               <Collapse in timeout="auto" unmountOnExit>
