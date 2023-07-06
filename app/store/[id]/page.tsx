@@ -316,6 +316,7 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
 const style = {
   position: "absolute",
   top: "50%",
