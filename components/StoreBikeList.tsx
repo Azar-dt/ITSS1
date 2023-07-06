@@ -157,13 +157,35 @@ const StoreBikeList: React.FC<Props> = ({
         </Container>
       </Grid>
       <Grid item xs={9} sx={{ background: "#cdcdcd", marginTop: 1 }}>
-        <BikeList
-          data={data}
-          isLoading={isLoading}
-          cursor={cursor}
-          setCursor={setCursor}
-          take={take}
-        />
+        {data?.total !== 0 ? (
+          <BikeList
+            data={data}
+            isLoading={isLoading}
+            cursor={cursor}
+            setCursor={setCursor}
+            take={take}
+          />
+        ) : (
+          <Box
+            p={2}
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                paddingBottom: "20px",
+              }}
+            >
+              バイクがありません
+            </Typography>
+          </Box>
+        )}
       </Grid>
     </Grid>
   );
