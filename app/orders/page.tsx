@@ -250,8 +250,7 @@ export default function Orders() {
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            // eslint-disable-next-line no-unsafe-optional-chaining
-            count={data ? data?.length / rowsPerPage : -1}
+            count={data ? data?.length : 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
