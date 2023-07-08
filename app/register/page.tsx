@@ -54,15 +54,21 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await axios.post("/api/register", registerForm);
+    try {
+      const res = await axios.post("/api/register", registerForm);
 
-    if (res?.status !== 200) {
-      toast.error(`サインアップに失敗しました\n${res.statusText}`);
-      return;
+      if (res?.status !== 200) {
+        toast.error(`サインアップに失敗しました\n${res.statusText}`);
+        return;
+      }
+
+      if (res?.status === 200) {
+        toast.success("サインアップしました");
+        router.push("/login");
+      }
+    } catch (error) {
+      toast.error(`サインアップに失敗しました\n${error}`);
     }
-
-    toast.success("サインアップしました");
-    router.push("/login");
   };
 
   return (

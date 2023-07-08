@@ -35,6 +35,9 @@ export async function POST(req: Request) {
           storeId: store.id,
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     const totalRating = allReviews.reduce((acc, curr) => {

@@ -25,6 +25,9 @@ export async function GET(
       include: {
         bike: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return NextResponse.json(orders);
