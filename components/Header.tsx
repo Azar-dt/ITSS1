@@ -1,4 +1,5 @@
 import useCurrentUser from "@/hooks/useCurrentUser";
+import flowerLogo from "@/public/logo.png";
 import { AccountCircle } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem, Skeleton } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -8,6 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Role } from "@prisma/client";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
@@ -97,7 +99,7 @@ export default function Header() {
             }}
             onClick={() => router.push("/")}
           >
-            🌸
+            <Image src={flowerLogo} alt="Flower Logo" width={60} height={60} />
           </Typography>
           <Typography
             variant="h6"
@@ -110,7 +112,7 @@ export default function Header() {
               },
             }}
             fontWeight={700}
-            fontSize={32}
+            fontSize={28}
             onClick={() => router.push("/")}
           >
             桜バイク

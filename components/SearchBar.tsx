@@ -17,6 +17,10 @@ type Props = {
   }) => void;
 };
 
+const RedLocationOnIcon = styled(LocationOnIcon)`
+  color: red;
+`;
+
 const SearchBar: React.FC<Props> = ({
   storeName,
   setStoreName,
@@ -69,7 +73,7 @@ const SearchBar: React.FC<Props> = ({
       <Button
         variant="contained"
         size="large"
-        endIcon={<LocationOnIcon />}
+        endIcon={<RedLocationOnIcon />}
         onClick={handleGetUserAddress}
       >
         位置
