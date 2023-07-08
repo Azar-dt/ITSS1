@@ -202,7 +202,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                             fontWeight={600}
                             my={4}
                           >
-                            評価を見る
+                            評価
                           </Typography>
                         </Box>
 
