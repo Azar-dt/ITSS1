@@ -44,19 +44,23 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await signIn("credentials", {
-      email: loginForm.email,
-      password: loginForm.password,
-      redirect: false,
-    });
+    try {
+      const res = await signIn("credentials", {
+        email: loginForm.email,
+        password: loginForm.password,
+        redirect: false,
+      });
 
-    if (res?.error) {
-      toast.error(`ログインに失敗しました\n${res.error}`);
-      return;
+      if (res?.ok) {
+        toast.success("ログインしました");
+        router.push("/");
+      }
+      if (!res?.ok) {
+        toast.error("ログインに失敗しました");
+      }
+    } catch (error) {
+      toast.error(`ログインに失敗しました\n${error.message}`);
     }
-
-    toast.success("ログインしました");
-    router.push("/");
   };
 
   return (

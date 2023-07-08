@@ -17,6 +17,9 @@ export async function GET(
         bike: true,
         user: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return NextResponse.json(reviews);
