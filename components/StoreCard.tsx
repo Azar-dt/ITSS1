@@ -69,6 +69,6 @@ const ProductItem = styled.div`
   box-shadow: 16px 16px 30px rgba(0, 0, 0, 0.02);
   transition: all 0.2s ease;
   :hover {
-    background-color: #d4e8d7;
+    background-color: #e4e4e4;
   }
 `;

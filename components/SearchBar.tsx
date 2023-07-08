@@ -75,6 +75,9 @@ const SearchBar: React.FC<Props> = ({
         size="large"
         endIcon={<RedLocationOnIcon />}
         onClick={handleGetUserAddress}
+        sx={{
+          backgroundColor: "#84c9ef",
+        }}
       >
         位置
       </Button>
@@ -90,7 +93,7 @@ const Search = styledMui("div")(({ theme }) => ({
   flexDirection: "row",
   backgroundColor: "#e4e4e4",
   "&:hover": {
-    backgroundColor: "#ccc",
+    backgroundColor: "#d0e0e3",
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,

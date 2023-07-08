@@ -84,39 +84,48 @@ export default function Header() {
           color: "#000",
         }}
       >
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            fontSize={48}
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center", // Thêm dòng này
+          }}
+        >
+          <Box
             sx={{
-              display: "flex",
-              mr: 1,
-              userSelect: "none",
+              display: "column",
+              alignItems: "center",
               ":hover": {
                 cursor: "pointer",
               },
             }}
             onClick={() => router.push("/")}
           >
-            <Image src={flowerLogo} alt="Flower Logo" width={60} height={60} />
-          </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              userSelect: "none",
-              ":hover": {
-                cursor: "pointer",
-              },
-            }}
-            fontWeight={700}
-            fontSize={28}
-            onClick={() => router.push("/")}
-          >
-            桜バイク
-          </Typography>
+            <Image
+              src={flowerLogo}
+              alt="Flower Logo"
+              width={62}
+              height={62}
+              style={{
+                userSelect: "none",
+                marginLeft: "10px",
+              }}
+            />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                userSelect: "none",
+                marginLeft: "13px",
+                marginBottom: "2px",
+              }}
+              fontWeight={900}
+              fontSize={14}
+              color="#ed1880"
+            >
+              桜バイク
+            </Typography>
+          </Box>
           {isLoading ? (
             <Skeleton variant="circular" width={40} height={40} />
           ) : data ? (
@@ -130,7 +139,7 @@ export default function Header() {
               >
                 <AccountCircle
                   sx={{
-                    fontSize: 40,
+                    fontSize: 50,
                   }}
                 />
               </IconButton>
@@ -167,8 +176,15 @@ export default function Header() {
             <Button
               color="inherit"
               sx={{
-                fontWeight: 700,
+                fontWeight: "bold",
+                border: "4px solid lightpink",
+                marginRight: "10px", // Border 2px, màu pink
+                // backgroundColor: "lightpink", // Màu nền lightpink
+                "&:hover": {
+                  backgroundColor: "lightpink",
+                },
               }}
+              fontSize={24}
               onClick={() => router.push("/login")}
             >
               ログイン
