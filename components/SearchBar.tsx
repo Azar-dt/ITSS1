@@ -76,7 +76,7 @@ const SearchBar: React.FC<Props> = ({
         endIcon={<RedLocationOnIcon />}
         onClick={handleGetUserAddress}
         sx={{
-          backgroundColor: "#84c9ef",
+          backgroundColor: "#4cb2ea",
         }}
       >
         位置
