@@ -18,7 +18,7 @@ type Props = {
 };
 
 const RedLocationOnIcon = styled(LocationOnIcon)`
-  color: red;
+  color: #ed1880;
 `;
 
 const SearchBar: React.FC<Props> = ({

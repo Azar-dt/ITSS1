@@ -80,9 +80,6 @@ const StoreBikeList: React.FC<Props> = ({
             justifyContent: "center",
           }}
         >
-          <span>
-            <FilterAltIcon style={{ color: "#aaa" }} />
-          </span>
           <Box
             sx={{
               maxWidth: 200,
@@ -104,6 +101,11 @@ const StoreBikeList: React.FC<Props> = ({
               }}
             >
               フィルター
+              <span>
+                <FilterAltIcon
+                  style={{ color: "#aaa", marginLeft: "2px", marginTop: "3px" }}
+                />
+              </span>
             </Typography>
             <Divider />
             <List component="nav" aria-label="secondary mailbox folder">

@@ -1,3 +1,4 @@
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -67,6 +68,11 @@ export const FilterList: React.FC<Props> = ({ setStoreAddress, setRadius }) => {
         }}
       >
         検索フィルター
+        <span>
+          <FilterAltIcon
+            style={{ color: "#aaa", marginLeft: "2px", marginTop: "3px" }}
+          />
+        </span>
       </Typography>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
