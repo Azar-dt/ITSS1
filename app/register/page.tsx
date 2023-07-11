@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import {
   Button,
@@ -73,7 +72,7 @@ const Register = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {isLoading ? (
         <Skeleton variant="rectangular" height={"100%"} />
       ) : (

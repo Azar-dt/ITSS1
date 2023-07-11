@@ -60,7 +60,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
 const ProductItem = styled.div`
   position: relative;
   width: 25%;
-  height: 100%;
+  height: 95%;
   min-width: 300px;
   display: flex;
   flex-direction: column;

@@ -162,7 +162,7 @@ const StoreBikeList: React.FC<Props> = ({
           </Box>
         </Container>
       </Grid>
-      <Grid item xs={9} sx={{ background: "#cdcdcd", marginTop: 1 }}>
+      <Grid item xs={9} sx={{ background: "#F7F4F4", marginTop: 1 }}>
         {data?.total !== 0 ? (
           <BikeList
             data={data}

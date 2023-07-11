@@ -47,7 +47,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
     `/api/reviews/${data?.id}`,
     fetcher
   );
-  const len = review ? review.length : 0;
+  // const len = review ? review.length : 0;
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
@@ -88,29 +88,40 @@ export default function StorePage({ params }: { params: { id: string } }) {
             borderColor: "divider",
             display: "flex",
             justifyContent: "center",
+            marginTop: 1,
           }}
         >
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
+            sx={{
+              width: "-webkit-fill-available",
+            }}
           >
             <Tab
               label="ストア情報"
               {...a11yProps(0)}
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1.3rem",
+                width: "50%",
+                backgroundColor: value === 0 ? "lightblue" : "inherit",
+                marginLeft: "200px",
+                marginRight: "150px",
               }}
             />
             <Tab
               label="バイクリスト"
               {...a11yProps(1)}
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1.3rem",
+                width: "50%",
+                backgroundColor: value === 1 ? "lightblue" : "inherit",
               }}
             />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0}>
           <Container>
             <Grid container sx={{ p: "0 10px", height: "100%" }}>
@@ -341,8 +352,8 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `tab-${index}`,
+    "aria-controls": `tabpanel-${index}`,
   };
 }
 
