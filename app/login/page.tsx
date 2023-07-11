@@ -51,11 +51,11 @@ const Login = () => {
         redirect: false,
       });
 
-      if (res?.ok) {
+      if (res?.status === 200) {
         toast.success("ログインしました");
         router.push("/");
       }
-      if (!res?.ok) {
+      if (res?.status !== 200) {
         toast.error("ログインに失敗しました");
       }
     } catch (error) {
