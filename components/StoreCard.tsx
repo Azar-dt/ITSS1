@@ -20,7 +20,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
         <CardMedia
           component="img"
           alt="green iguana"
-          height="120"
+          height="160"
           image={store.imgUrl}
         />
         <CardContent>
@@ -30,7 +30,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
           <Typography variant="body2" color="text.secondary">
             {store.bio} <br />
             <br />
-            住所:{store.address}
+            住所: {store.address}
           </Typography>
         </CardContent>
         <Typography component="legend">評価</Typography>

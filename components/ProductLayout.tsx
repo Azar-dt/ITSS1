@@ -67,7 +67,7 @@ const ProductLayout: React.FC<Props> = ({
             display: "flex",
             flexDirection: "row",
             backgroundColor: "#e4e4e4",
-            width: "97%",
+            width: "97.3%",
             padding: "12px 24px",
             justifyContent: "flex-start",
             gap: "20px",

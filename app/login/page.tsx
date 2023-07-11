@@ -59,7 +59,9 @@ const Login = () => {
         toast.error("ログインに失敗しました");
       }
     } catch (error) {
-      toast.error(`ログインに失敗しました\n${error.message}`);
+      toast.error(
+        `ログインに失敗しました\nパスワードとユーザー名を再確認してください`
+      );
     }
   };
 

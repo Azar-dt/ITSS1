@@ -117,7 +117,7 @@ export default function Header() {
               sx={{
                 userSelect: "none",
                 marginLeft: "13px",
-                marginBottom: "2px",
+                marginBottom: "1px",
               }}
               fontWeight={900}
               fontSize={14}
@@ -178,13 +178,14 @@ export default function Header() {
               sx={{
                 fontWeight: "bold",
                 border: "4px solid lightpink",
-                marginRight: "10px", // Border 2px, màu pink
-                // backgroundColor: "lightpink", // Màu nền lightpink
+                marginRight: "10px",
                 "&:hover": {
                   backgroundColor: "lightpink",
                 },
+                typography: {
+                  fontSize: 16,
+                },
               }}
-              fontSize={24}
               onClick={() => router.push("/login")}
             >
               ログイン

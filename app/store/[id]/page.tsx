@@ -152,6 +152,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                     sx={{
                       verticalAlign: "middle",
                       display: "inline-flex",
+                      marginRight: "2px",
                     }}
                   />
                   電話番号: {data?.phoneNumber}
