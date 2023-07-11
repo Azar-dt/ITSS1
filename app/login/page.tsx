@@ -54,12 +54,11 @@ const Login = () => {
         redirect: false,
       });
 
-      if (res?.ok) {
+      if (!res?.error) {
         toast.success("ログインしました");
         router.push("/");
-      }
-      if (!res?.ok) {
-        toast.error("ログインに失敗しました");
+      } else {
+        toast.error(`ログインに失敗しました\n${res.error}`);
       }
     } catch (error) {
       toast.error(
