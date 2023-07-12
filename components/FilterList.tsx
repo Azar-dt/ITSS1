@@ -53,7 +53,7 @@ export const FilterList: React.FC<Props> = ({ setStoreAddress, setRadius }) => {
         borderRadius: "8px",
         height: "max-content",
         flexGrow: 1,
-        marginLeft: "-55px",
+        marginLeft: "-10vmin",
       }}
     >
       <Typography

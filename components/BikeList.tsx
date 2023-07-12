@@ -47,7 +47,7 @@ const BikeList: React.FC<Props> = ({
               sm={4}
               md={4}
               sx={{
-                backgroundColor: "#CDCDCD",
+                backgroundColor: "#f1e8e8",
                 height: "380px",
               }}
             >

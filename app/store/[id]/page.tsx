@@ -88,7 +88,9 @@ export default function StorePage({ params }: { params: { id: string } }) {
             borderColor: "divider",
             display: "flex",
             justifyContent: "center",
-            marginTop: 1,
+            marginTop: "1vmin",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Tabs
@@ -96,7 +98,9 @@ export default function StorePage({ params }: { params: { id: string } }) {
             onChange={handleChange}
             aria-label="basic tabs example"
             sx={{
-              width: "-webkit-fill-available",
+              maxHeight: "fit-content",
+              justifyContent: "center",
+              flexWrap: "nowrap", // Ngăn các label tự xuống dòng
             }}
           >
             <Tab
@@ -104,10 +108,10 @@ export default function StorePage({ params }: { params: { id: string } }) {
               {...a11yProps(0)}
               sx={{
                 fontSize: "1.3rem",
-                width: "50%",
+                width: "calc(50% - 20vmin)", // Khoảng cách giữa hai tab
                 backgroundColor: value === 0 ? "lightblue" : "inherit",
-                marginLeft: "200px",
-                marginRight: "150px",
+                whiteSpace: "nowrap",
+                marginRight: "20vmin", // Khoảng cách giữa tab và giới hạn của tab
               }}
             />
             <Tab
@@ -115,8 +119,10 @@ export default function StorePage({ params }: { params: { id: string } }) {
               {...a11yProps(1)}
               sx={{
                 fontSize: "1.3rem",
-                width: "50%",
+                width: "calc(50% - 20vmin)", // Khoảng cách giữa hai tab
                 backgroundColor: value === 1 ? "lightblue" : "inherit",
+                whiteSpace: "nowrap",
+                marginLeft: "20vmin", // Khoảng cách giữa tab và giới hạn của tab
               }}
             />
           </Tabs>

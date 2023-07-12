@@ -82,8 +82,19 @@ export default function Header() {
         sx={{
           backgroundColor: "#fff",
           color: "#000",
+          position: "relative" /* Thêm thuộc tính position */,
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: "linear-gradient(to right, #ff8eb4, #ffffff)",
+          }}
+        />
         <Toolbar
           sx={{
             display: "flex",
@@ -109,6 +120,8 @@ export default function Header() {
               style={{
                 userSelect: "none",
                 marginLeft: "10px",
+
+                marginTop: "0.5px",
               }}
             />
             <Typography
@@ -117,7 +130,7 @@ export default function Header() {
               sx={{
                 userSelect: "none",
                 marginLeft: "13px",
-                marginBottom: "1px",
+                marginBottom: "0.5px",
               }}
               fontWeight={900}
               fontSize={14}

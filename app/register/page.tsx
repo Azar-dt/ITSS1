@@ -89,11 +89,11 @@ const Register = () => {
             minWidth: "-webkit-fill-available",
           }}
         >
-          <Grid container spacing={7}>
+          <Grid container spacing={"8vmin"}>
             <Grid
               item
               sx={{
-                marginTop: "20px",
+                marginTop: "8vmin",
               }}
             >
               <Box
@@ -113,7 +113,7 @@ const Register = () => {
                   height={120}
                   style={{
                     userSelect: "none",
-                    marginLeft: "100px",
+                    marginLeft: "9vmin",
                   }}
                 />
                 <Typography
@@ -121,8 +121,8 @@ const Register = () => {
                   component="div"
                   sx={{
                     userSelect: "none",
-                    marginLeft: "106px",
-                    marginBottom: "100px",
+                    marginLeft: "10vmin",
+                    marginBottom: "19vmin",
                   }}
                   fontWeight={700}
                   fontSize={28}
@@ -135,7 +135,7 @@ const Register = () => {
             <Grid
               item
               sx={{
-                marginTop: "200px",
+                marginTop: "40vmin",
               }}
             >
               <Image

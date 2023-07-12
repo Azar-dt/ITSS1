@@ -114,7 +114,7 @@ const ProductLayout: React.FC<Props> = ({
               height={"70vh"}
               sx={{
                 margin: "auto",
-                marginTop: "20px",
+                marginTop: "5vmin",
               }}
             />
           )}

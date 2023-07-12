@@ -87,7 +87,7 @@ const StoreBikeList: React.FC<Props> = ({
               borderRadius: "8px",
               height: "max-content",
               flexGrow: 1,
-              marginLeft: "-70px",
+              marginLeft: "-10vmin",
             }}
           >
             <Typography
