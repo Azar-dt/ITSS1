@@ -20,7 +20,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
         <CardMedia
           component="img"
           alt="green iguana"
-          height="120"
+          height="160"
           image={store.imgUrl}
         />
         <CardContent>
@@ -30,7 +30,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
           <Typography variant="body2" color="text.secondary">
             {store.bio} <br />
             <br />
-            住所:{store.address}
+            住所: {store.address}
           </Typography>
         </CardContent>
         <Typography component="legend">評価</Typography>
@@ -60,7 +60,7 @@ export const StoreCard: React.FC<Props> = ({ store }) => {
 const ProductItem = styled.div`
   position: relative;
   width: 25%;
-  height: 100%;
+  height: 95%;
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -69,6 +69,6 @@ const ProductItem = styled.div`
   box-shadow: 16px 16px 30px rgba(0, 0, 0, 0.02);
   transition: all 0.2s ease;
   :hover {
-    background-color: #d4e8d7;
+    background-color: #e4e4e4;
   }
 `;

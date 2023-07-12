@@ -80,9 +80,6 @@ const StoreBikeList: React.FC<Props> = ({
             justifyContent: "center",
           }}
         >
-          <span>
-            <FilterAltIcon style={{ color: "#aaa" }} />
-          </span>
           <Box
             sx={{
               maxWidth: 200,
@@ -90,6 +87,7 @@ const StoreBikeList: React.FC<Props> = ({
               borderRadius: "8px",
               height: "max-content",
               flexGrow: 1,
+              marginLeft: "-10vmin",
             }}
           >
             <Typography
@@ -104,6 +102,11 @@ const StoreBikeList: React.FC<Props> = ({
               }}
             >
               フィルター
+              <span>
+                <FilterAltIcon
+                  style={{ color: "#aaa", marginLeft: "2px", marginTop: "3px" }}
+                />
+              </span>
             </Typography>
             <Divider />
             <List component="nav" aria-label="secondary mailbox folder">
@@ -159,7 +162,7 @@ const StoreBikeList: React.FC<Props> = ({
           </Box>
         </Container>
       </Grid>
-      <Grid item xs={9} sx={{ background: "#cdcdcd", marginTop: 1 }}>
+      <Grid item xs={9} sx={{ background: "#F7F4F4", marginTop: 1 }}>
         {data?.total !== 0 ? (
           <BikeList
             data={data}

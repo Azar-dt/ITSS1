@@ -34,9 +34,9 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
     <ProductItem>
       <Card
         sx={{
-          maxWidth: 305,
+          maxWidth: "300px",
           borderRadius: "5px",
-          padding: "30px 0",
+          padding: "20px 0",
           backgroundColor: "#dddddd",
           transition: "all 1s ease",
           hover: {
@@ -49,7 +49,7 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
         <CardMedia
           component="img"
           alt="green iguana"
-          height="120"
+          height="150"
           image={
             bike.imgUrl ??
             // eslint-disable-next-line max-len
@@ -103,9 +103,9 @@ const BikeCard: React.FC<Props> = ({ bike }) => {
 
 const ProductItem = styled.div`
   position: relative;
-  width: 25%;
+  width: 22%;
   height: 100%;
-  min-width: 300px;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   padding: 0px 10px;

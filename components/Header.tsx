@@ -1,4 +1,5 @@
 import useCurrentUser from "@/hooks/useCurrentUser";
+import flowerLogo from "@/public/logo.png";
 import { AccountCircle } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem, Skeleton } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -8,6 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Role } from "@prisma/client";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
@@ -80,41 +82,63 @@ export default function Header() {
         sx={{
           backgroundColor: "#fff",
           color: "#000",
+          position: "relative" /* Thêm thuộc tính position */,
         }}
       >
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            fontSize={48}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: "linear-gradient(to right, #ff8eb4, #ffffff)",
+          }}
+        />
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center", // Thêm dòng này
+          }}
+        >
+          <Box
             sx={{
-              display: "flex",
-              mr: 1,
-              userSelect: "none",
+              display: "column",
+              alignItems: "center",
               ":hover": {
                 cursor: "pointer",
               },
             }}
             onClick={() => router.push("/")}
           >
-            🌸
-          </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              userSelect: "none",
-              ":hover": {
-                cursor: "pointer",
-              },
-            }}
-            fontWeight={700}
-            fontSize={32}
-            onClick={() => router.push("/")}
-          >
-            桜バイク
-          </Typography>
+            <Image
+              src={flowerLogo}
+              alt="Flower Logo"
+              width={62}
+              height={62}
+              style={{
+                userSelect: "none",
+                marginLeft: "10px",
+
+                marginTop: "0.5px",
+              }}
+            />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                userSelect: "none",
+                marginLeft: "13px",
+                marginBottom: "0.5px",
+              }}
+              fontWeight={900}
+              fontSize={14}
+              color="#ed1880"
+            >
+              桜バイク
+            </Typography>
+          </Box>
           {isLoading ? (
             <Skeleton variant="circular" width={40} height={40} />
           ) : data ? (
@@ -128,7 +152,7 @@ export default function Header() {
               >
                 <AccountCircle
                   sx={{
-                    fontSize: 40,
+                    fontSize: 50,
                   }}
                 />
               </IconButton>
@@ -165,7 +189,15 @@ export default function Header() {
             <Button
               color="inherit"
               sx={{
-                fontWeight: 700,
+                fontWeight: "bold",
+                border: "4px solid lightpink",
+                marginRight: "10px",
+                "&:hover": {
+                  backgroundColor: "lightpink",
+                },
+                typography: {
+                  fontSize: 16,
+                },
               }}
               onClick={() => router.push("/login")}
             >

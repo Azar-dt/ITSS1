@@ -47,7 +47,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
     `/api/reviews/${data?.id}`,
     fetcher
   );
-  const len = review ? review.length : 0;
+  // const len = review ? review.length : 0;
 
   const [cursor, setCursor] = React.useState(0);
   const take = 6;
@@ -88,29 +88,46 @@ export default function StorePage({ params }: { params: { id: string } }) {
             borderColor: "divider",
             display: "flex",
             justifyContent: "center",
+            marginTop: "1vmin",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
+            sx={{
+              maxHeight: "fit-content",
+              justifyContent: "center",
+              flexWrap: "nowrap", // Ngăn các label tự xuống dòng
+            }}
           >
             <Tab
               label="ストア情報"
               {...a11yProps(0)}
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1.3rem",
+                width: "calc(50% - 20vmin)", // Khoảng cách giữa hai tab
+                backgroundColor: value === 0 ? "lightblue" : "inherit",
+                whiteSpace: "nowrap",
+                marginRight: "20vmin", // Khoảng cách giữa tab và giới hạn của tab
               }}
             />
             <Tab
               label="バイクリスト"
               {...a11yProps(1)}
               sx={{
-                fontSize: "1.5rem",
+                fontSize: "1.3rem",
+                width: "calc(50% - 20vmin)", // Khoảng cách giữa hai tab
+                backgroundColor: value === 1 ? "lightblue" : "inherit",
+                whiteSpace: "nowrap",
+                marginLeft: "20vmin", // Khoảng cách giữa tab và giới hạn của tab
               }}
             />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0}>
           <Container>
             <Grid container sx={{ p: "0 10px", height: "100%" }}>
@@ -152,6 +169,7 @@ export default function StorePage({ params }: { params: { id: string } }) {
                     sx={{
                       verticalAlign: "middle",
                       display: "inline-flex",
+                      marginRight: "2px",
                     }}
                   />
                   電話番号: {data?.phoneNumber}
@@ -340,8 +358,8 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `tab-${index}`,
+    "aria-controls": `tabpanel-${index}`,
   };
 }
 

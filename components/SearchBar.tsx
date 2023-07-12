@@ -17,6 +17,10 @@ type Props = {
   }) => void;
 };
 
+const RedLocationOnIcon = styled(LocationOnIcon)`
+  color: #ed1880;
+`;
+
 const SearchBar: React.FC<Props> = ({
   storeName,
   setStoreName,
@@ -69,8 +73,11 @@ const SearchBar: React.FC<Props> = ({
       <Button
         variant="contained"
         size="large"
-        endIcon={<LocationOnIcon />}
+        endIcon={<RedLocationOnIcon />}
         onClick={handleGetUserAddress}
+        sx={{
+          backgroundColor: "#4cb2ea",
+        }}
       >
         位置
       </Button>
@@ -86,7 +93,7 @@ const Search = styledMui("div")(({ theme }) => ({
   flexDirection: "row",
   backgroundColor: "#e4e4e4",
   "&:hover": {
-    backgroundColor: "#ccc",
+    backgroundColor: "#d0e0e3",
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,

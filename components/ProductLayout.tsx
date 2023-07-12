@@ -66,8 +66,8 @@ const ProductLayout: React.FC<Props> = ({
           sx={{
             display: "flex",
             flexDirection: "row",
-            backgroundColor: "#ccc",
-            width: "100%",
+            backgroundColor: "#e4e4e4",
+            width: "97.3%",
             padding: "12px 24px",
             justifyContent: "flex-start",
             gap: "20px",
@@ -114,7 +114,7 @@ const ProductLayout: React.FC<Props> = ({
               height={"70vh"}
               sx={{
                 margin: "auto",
-                marginTop: "20px",
+                marginTop: "5vmin",
               }}
             />
           )}
